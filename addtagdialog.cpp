@@ -13,12 +13,10 @@
 
 
 AddTagDialog::AddTagDialog(QWidget *parent)
-    : QDialog( parent)
-{
-setModal(true);
-ui.setupUi(this);
+    : QDialog( parent) {
+    setModal(true);
+    ui.setupUi(this);
 }
-AddTagDialog::~AddTagDialog()
-{
+AddTagDialog::~AddTagDialog() {
 }
 

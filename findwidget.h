@@ -15,8 +15,7 @@
 #include "ui_findwidget.h"
 #include "latexeditor.h"
 
-class FindWidget : public QWidget
-{ 
+class FindWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -31,7 +30,7 @@ public slots:
 protected:
     LatexEditor *editor;
 signals:
-void requestHide();
+    void requestHide();
 };
 
 #endif

@@ -69,8 +69,7 @@
     \sa QFile::QFile()
 */
 QtLockedFile::QtLockedFile()
-    : QFile()
-{
+    : QFile() {
 #ifdef Q_OS_WIN
     m_semaphore_hnd = 0;
     m_mutex_hnd = 0;
@@ -85,8 +84,7 @@ QtLockedFile::QtLockedFile()
     \sa QFile::QFile()
 */
 QtLockedFile::QtLockedFile(const QString &name)
-    : QFile(name)
-{
+    : QFile(name) {
 #ifdef Q_OS_WIN
     m_semaphore_hnd = 0;
     m_mutex_hnd = 0;
@@ -100,8 +98,7 @@ QtLockedFile::QtLockedFile(const QString &name)
 
     \sa lockMode()
 */
-bool QtLockedFile::isLocked() const
-{
+bool QtLockedFile::isLocked() const {
     return m_lock_mode != NoLock;
 }
 
@@ -110,8 +107,7 @@ bool QtLockedFile::isLocked() const
 
     \sa isLocked()
 */
-QtLockedFile::LockMode QtLockedFile::lockMode() const
-{
+QtLockedFile::LockMode QtLockedFile::lockMode() const {
     return m_lock_mode;
 }
 

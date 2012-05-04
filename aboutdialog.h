@@ -15,11 +15,11 @@
 #include "ui_aboutdialog.h"
 
 class AboutDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	AboutDialog(QWidget *parent=0);
-	~AboutDialog();
-	Ui::AboutDialog ui;
+    AboutDialog(QWidget *parent=0);
+    ~AboutDialog();
+    Ui::AboutDialog ui;
 };
 
 

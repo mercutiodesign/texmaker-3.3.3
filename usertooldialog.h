@@ -20,13 +20,13 @@ typedef QString userCd[5];
 
 
 class UserToolDialog : public QDialog  {
-   Q_OBJECT
-public: 
-	UserToolDialog(QWidget *parent=0, QString name="", QStringList names=QStringList(""), QStringList commands=QStringList(""));
-	~UserToolDialog();
-	Ui::UserToolDialog ui;
+    Q_OBJECT
+public:
+    UserToolDialog(QWidget *parent=0, QString name="", QStringList names=QStringList(""), QStringList commands=QStringList(""));
+    ~UserToolDialog();
+    Ui::UserToolDialog ui;
 
-      userCd Name,Tool;
+    userCd Name,Tool;
 
 private:
     int previous_index;

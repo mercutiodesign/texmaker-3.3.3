@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -32,25 +32,33 @@
 namespace qencodingprober {
 class  nsEUCTWProber: public nsCharSetProber {
 public:
-  nsEUCTWProber(void){mCodingSM = new nsCodingStateMachine(&EUCTWSMModel);
-                      Reset();};
-  virtual ~nsEUCTWProber(void){delete mCodingSM;};
-  nsProbingState HandleData(const char* aBuf, unsigned int aLen);
-  const char* GetCharSetName() {return "x-euc-tw";};
-  nsProbingState GetState(void) {return mState;};
-  void      Reset(void);
-  float     GetConfidence(void);
-  void      SetOpion() {};
+    nsEUCTWProber(void) {
+        mCodingSM = new nsCodingStateMachine(&EUCTWSMModel);
+        Reset();
+    };
+    virtual ~nsEUCTWProber(void) {
+        delete mCodingSM;
+    };
+    nsProbingState HandleData(const char* aBuf, unsigned int aLen);
+    const char* GetCharSetName() {
+        return "x-euc-tw";
+    };
+    nsProbingState GetState(void) {
+        return mState;
+    };
+    void      Reset(void);
+    float     GetConfidence(void);
+    void      SetOpion() {};
 
 protected:
-  void      GetDistribution(unsigned int aCharLen, const char* aStr);
-  
-  nsCodingStateMachine* mCodingSM;
-  nsProbingState mState;
+    void      GetDistribution(unsigned int aCharLen, const char* aStr);
 
-  //EUCTWContextAnalysis mContextAnalyser;
-  EUCTWDistributionAnalysis mDistributionAnalyser;
-  char mLastChar[2];
+    nsCodingStateMachine* mCodingSM;
+    nsProbingState mState;
+
+    //EUCTWContextAnalysis mContextAnalyser;
+    EUCTWDistributionAnalysis mDistributionAnalyser;
+    char mLastChar[2];
 
 };
 }

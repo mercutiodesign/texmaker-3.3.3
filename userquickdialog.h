@@ -22,22 +22,22 @@
 typedef  QMap<QString,QString> CommandsMap;
 
 class UserQuickDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	UserQuickDialog(QWidget *parent=0, QStringList usualNames=QStringList(""), QStringList usualCommands=QStringList(""));
-	~UserQuickDialog();
-	Ui::UserQuickDialog ui;
-QString userQuickCommand;
+    UserQuickDialog(QWidget *parent=0, QStringList usualNames=QStringList(""), QStringList usualCommands=QStringList(""));
+    ~UserQuickDialog();
+    Ui::UserQuickDialog ui;
+    QString userQuickCommand;
 private:
-QStringList userlist;
-CommandsMap cmdmap;
+    QStringList userlist;
+    CommandsMap cmdmap;
 private slots:
-void addItem(QString cmd);
-void actionUp();
-void actionDown();
-void actionDelete();
-void actionAddCommand();
-void updateQuickCommand();
+    void addItem(QString cmd);
+    void actionUp();
+    void actionDown();
+    void actionDelete();
+    void actionAddCommand();
+    void updateQuickCommand();
 };
 
 

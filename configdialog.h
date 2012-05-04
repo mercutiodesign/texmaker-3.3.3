@@ -19,43 +19,42 @@
 #include "keysequencedialog.h"
 #include "userquickdialog.h"
 
-class ConfigDialog : public QDialog
-{
+class ConfigDialog : public QDialog {
     Q_OBJECT
 
 public:
     ConfigDialog(QWidget* parent = 0);
-	~ConfigDialog();
-Ui::ConfigDialog ui;
+    ~ConfigDialog();
+    Ui::ConfigDialog ui;
 
 public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
 
 private slots:
-void createIcons();
-void browseAspell();
-void browseLatex();
-void browseDvips();
-void browseBibtex();
-void browseMakeindex();
-void browseDviviewer();
-void browsePsviewer();
-void browsePdflatex();
-void browseDvipdfm();
-void browsePs2pdf();
-void browsePdfviewer();
-void browseMetapost();
-void browseGhostscript();
-void browseAsymptote();
-void browseLatexmk();
-void configureShortCut(QTableWidgetItem *item);
-void configureKeyToggle();
-void userQuickWizard();
-void restoreColors();
-void darkColors();
+    void createIcons();
+    void browseAspell();
+    void browseLatex();
+    void browseDvips();
+    void browseBibtex();
+    void browseMakeindex();
+    void browseDviviewer();
+    void browsePsviewer();
+    void browsePdflatex();
+    void browseDvipdfm();
+    void browsePs2pdf();
+    void browsePdfviewer();
+    void browseMetapost();
+    void browseGhostscript();
+    void browseAsymptote();
+    void browseLatexmk();
+    void configureShortCut(QTableWidgetItem *item);
+    void configureKeyToggle();
+    void userQuickWizard();
+    void restoreColors();
+    void darkColors();
 private :
-KeySequenceDialog *keydlg;
-UserQuickDialog *userquickdlg;
+    KeySequenceDialog *keydlg;
+    UserQuickDialog *userquickdlg;
 };
 
 #endif

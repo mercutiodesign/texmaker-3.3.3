@@ -15,8 +15,7 @@
 #include "ui_gotolinewidget.h"
 #include "latexeditor.h"
 
-class GotoLineWidget : public QWidget
-{ 
+class GotoLineWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -31,7 +30,7 @@ public slots:
 protected:
     LatexEditor *editor;
 signals:
-void requestHide();
+    void requestHide();
 };
 
-#endif 
+#endif

@@ -19,49 +19,44 @@
 
 
 KeySequenceDialog::KeySequenceDialog(QWidget *parent)
-    : QDialog( parent), m_num(0)
-{
-setModal(true);
-ui.setupUi(this);
-ui.lineEdit->installEventFilter(this);
-ui.lineEdit->setReadOnly(true);
-ui.lineEdit->setFocusProxy(this);
-setFocusPolicy(ui.lineEdit->focusPolicy());
-setAttribute(Qt::WA_InputMethodEnabled);
-connect( ui.pushButtonClear, SIGNAL( clicked() ), this, SLOT( slotClearShortcut() ) );
+    : QDialog( parent), m_num(0) {
+    setModal(true);
+    ui.setupUi(this);
+    ui.lineEdit->installEventFilter(this);
+    ui.lineEdit->setReadOnly(true);
+    ui.lineEdit->setFocusProxy(this);
+    setFocusPolicy(ui.lineEdit->focusPolicy());
+    setAttribute(Qt::WA_InputMethodEnabled);
+    connect( ui.pushButtonClear, SIGNAL( clicked() ), this, SLOT( slotClearShortcut() ) );
 }
-KeySequenceDialog::~KeySequenceDialog()
-{
+KeySequenceDialog::~KeySequenceDialog() {
 }
 
-bool KeySequenceDialog::eventFilter(QObject *o, QEvent *e)
-{
-if (o == ui.lineEdit && e->type() == QEvent::ContextMenu) {
-    QContextMenuEvent *c = static_cast<QContextMenuEvent *>(e);
-    QMenu *menu = new QMenu(ui.lineEdit);
-    QAction *clearAction = new QAction(tr("Clear"), menu);
-    menu->addAction(clearAction);
-    clearAction->setEnabled(!m_keySequence.isEmpty());
-    connect(clearAction, SIGNAL(triggered()), this, SLOT(slotClearShortcut()));
-    menu->exec(c->globalPos());
-    delete menu;
-    e->accept();
-    return true;
+bool KeySequenceDialog::eventFilter(QObject *o, QEvent *e) {
+    if (o == ui.lineEdit && e->type() == QEvent::ContextMenu) {
+        QContextMenuEvent *c = static_cast<QContextMenuEvent *>(e);
+        QMenu *menu = new QMenu(ui.lineEdit);
+        QAction *clearAction = new QAction(tr("Clear"), menu);
+        menu->addAction(clearAction);
+        clearAction->setEnabled(!m_keySequence.isEmpty());
+        connect(clearAction, SIGNAL(triggered()), this, SLOT(slotClearShortcut()));
+        menu->exec(c->globalPos());
+        delete menu;
+        e->accept();
+        return true;
+    }
+
+    return QWidget::eventFilter(o, e);
 }
 
-return QWidget::eventFilter(o, e);
-}
-
-void KeySequenceDialog::slotClearShortcut()
-{
+void KeySequenceDialog::slotClearShortcut() {
     if (m_keySequence.isEmpty())
         return;
     setKeySequence(QKeySequence());
     emit keySequenceChanged(m_keySequence);
 }
 
-void KeySequenceDialog::handleKeyEvent(QKeyEvent *e)
-{
+void KeySequenceDialog::handleKeyEvent(QKeyEvent *e) {
     int nextKey = e->key();
     if (nextKey == Qt::Key_Control || nextKey == Qt::Key_Shift ||
             nextKey == Qt::Key_Meta || nextKey == Qt::Key_Alt ||
@@ -74,11 +69,26 @@ void KeySequenceDialog::handleKeyEvent(QKeyEvent *e)
     int k2 = m_keySequence[2];
     int k3 = m_keySequence[3];
     switch (m_num) {
-        case 0: k0 = nextKey; k1 = 0; k2 = 0; k3 = 0; break;
-        case 1: k1 = nextKey; k2 = 0; k3 = 0; break;
-        case 2: k2 = nextKey; k3 = 0; break;
-        case 3: k3 = nextKey; break;
-        default: break;
+    case 0:
+        k0 = nextKey;
+        k1 = 0;
+        k2 = 0;
+        k3 = 0;
+        break;
+    case 1:
+        k1 = nextKey;
+        k2 = 0;
+        k3 = 0;
+        break;
+    case 2:
+        k2 = nextKey;
+        k3 = 0;
+        break;
+    case 3:
+        k3 = nextKey;
+        break;
+    default:
+        break;
     }
     ++m_num;
     if (m_num > 3)
@@ -89,8 +99,7 @@ void KeySequenceDialog::handleKeyEvent(QKeyEvent *e)
     emit keySequenceChanged(m_keySequence);
 }
 
-void KeySequenceDialog::setKeySequence(const QKeySequence &sequence)
-{
+void KeySequenceDialog::setKeySequence(const QKeySequence &sequence) {
     if (sequence == m_keySequence)
         return;
     m_num = 0;
@@ -98,13 +107,11 @@ void KeySequenceDialog::setKeySequence(const QKeySequence &sequence)
     ui.lineEdit->setText(m_keySequence.toString(QKeySequence::PortableText));
 }
 
-QKeySequence KeySequenceDialog::keySequence() const
-{
+QKeySequence KeySequenceDialog::keySequence() const {
     return m_keySequence;
 }
 
-int KeySequenceDialog::translateModifiers(Qt::KeyboardModifiers state, const QString &text) const
-{
+int KeySequenceDialog::translateModifiers(Qt::KeyboardModifiers state, const QString &text) const {
     int result = 0;
     if ((state & Qt::ShiftModifier) && (text.size() == 0 || !text.at(0).isPrint() || text.at(0).isLetter() || text.at(0).isSpace()))
         result |= Qt::SHIFT;
@@ -117,33 +124,28 @@ int KeySequenceDialog::translateModifiers(Qt::KeyboardModifiers state, const QSt
     return result;
 }
 
-void KeySequenceDialog::focusInEvent(QFocusEvent *e)
-{
+void KeySequenceDialog::focusInEvent(QFocusEvent *e) {
     ui.lineEdit->event(e);
     ui.lineEdit->selectAll();
     QWidget::focusInEvent(e);
 }
 
-void KeySequenceDialog::focusOutEvent(QFocusEvent *e)
-{
+void KeySequenceDialog::focusOutEvent(QFocusEvent *e) {
     m_num = 0;
     ui.lineEdit->event(e);
     QWidget::focusOutEvent(e);
 }
 
-void KeySequenceDialog::keyPressEvent(QKeyEvent *e)
-{
+void KeySequenceDialog::keyPressEvent(QKeyEvent *e) {
     handleKeyEvent(e);
     e->accept();
 }
 
-void KeySequenceDialog::keyReleaseEvent(QKeyEvent *e)
-{
+void KeySequenceDialog::keyReleaseEvent(QKeyEvent *e) {
     ui.lineEdit->event(e);
 }
 
-bool KeySequenceDialog::event(QEvent *e)
-{
+bool KeySequenceDialog::event(QEvent *e) {
     if (e->type() == QEvent::Shortcut ||
             e->type() == QEvent::ShortcutOverride  ||
             e->type() == QEvent::KeyRelease) {

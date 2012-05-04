@@ -32,16 +32,13 @@
 
 #include <string.h>
 
-class QEncodingProberPrivate
-{
+class QEncodingProberPrivate {
 public:
     QEncodingProberPrivate(): prober(NULL), mStart(true) {};
-    ~QEncodingProberPrivate()
-    {
+    ~QEncodingProberPrivate() {
         delete prober;
     }
-    void setProberType(QEncodingProber::ProberType pType)
-    {
+    void setProberType(QEncodingProber::ProberType pType) {
         proberType = pType;
         /* handle multi-byte encodings carefully , because they're hard to detect,
         *   and have to use some Stastics methods.
@@ -52,55 +49,52 @@ public:
         delete prober;
 
         switch (proberType) {
-            case QEncodingProber::None:
-                prober = NULL;
-                break;
-            case QEncodingProber::Arabic:
-            case QEncodingProber::Baltic:
-            case QEncodingProber::CentralEuropean:
-            case QEncodingProber::Cyrillic:
-            case QEncodingProber::Greek:
-            case QEncodingProber::Hebrew:
-            case QEncodingProber::NorthernSaami:
-            case QEncodingProber::Other:
-            case QEncodingProber::SouthEasternEurope:
-            case QEncodingProber::Thai:
-            case QEncodingProber::Turkish:
-            case QEncodingProber::WesternEuropean:
-                prober = new qencodingprober::nsSBCSGroupProber();
-                break;
-            case QEncodingProber::ChineseSimplified:
-            case QEncodingProber::ChineseTraditional:
-                prober = new qencodingprober::ChineseGroupProber();
-                break;
-            case QEncodingProber::Japanese:
-                prober = new qencodingprober::JapaneseGroupProber();
-                break;
-            case QEncodingProber::Korean:
-                prober = new qencodingprober::nsMBCSGroupProber();
-                break;
-            case QEncodingProber::Unicode:
-                prober = new qencodingprober::UnicodeGroupProber();
-                break;
-            case QEncodingProber::Universal:
-                prober = new qencodingprober::nsUniversalDetector();
-                break;
-            default:
-                prober = NULL;
+        case QEncodingProber::None:
+            prober = NULL;
+            break;
+        case QEncodingProber::Arabic:
+        case QEncodingProber::Baltic:
+        case QEncodingProber::CentralEuropean:
+        case QEncodingProber::Cyrillic:
+        case QEncodingProber::Greek:
+        case QEncodingProber::Hebrew:
+        case QEncodingProber::NorthernSaami:
+        case QEncodingProber::Other:
+        case QEncodingProber::SouthEasternEurope:
+        case QEncodingProber::Thai:
+        case QEncodingProber::Turkish:
+        case QEncodingProber::WesternEuropean:
+            prober = new qencodingprober::nsSBCSGroupProber();
+            break;
+        case QEncodingProber::ChineseSimplified:
+        case QEncodingProber::ChineseTraditional:
+            prober = new qencodingprober::ChineseGroupProber();
+            break;
+        case QEncodingProber::Japanese:
+            prober = new qencodingprober::JapaneseGroupProber();
+            break;
+        case QEncodingProber::Korean:
+            prober = new qencodingprober::nsMBCSGroupProber();
+            break;
+        case QEncodingProber::Unicode:
+            prober = new qencodingprober::UnicodeGroupProber();
+            break;
+        case QEncodingProber::Universal:
+            prober = new qencodingprober::nsUniversalDetector();
+            break;
+        default:
+            prober = NULL;
         }
     }
-    void unicodeTest(const char *aBuf, int aLen)
-    {
-        if (mStart)
-        {
+    void unicodeTest(const char *aBuf, int aLen) {
+        if (mStart) {
             mStart = false;
             if (aLen > 3)
-            switch (aBuf[0])
-            {
+                switch (aBuf[0]) {
                 case '\xEF':
                     if (('\xBB' == aBuf[1]) && ('\xBF' == aBuf[2]))
-                    // EF BB BF  UTF-8 encoded BOM
-                    proberState = QEncodingProber::FoundIt;
+                        // EF BB BF  UTF-8 encoded BOM
+                        proberState = QEncodingProber::FoundIt;
                     break;
                 case '\xFE':
                     if (('\xFF' == aBuf[1]) && ('\x00' == aBuf[2]) && ('\x00' == aBuf[3]))
@@ -109,7 +103,7 @@ public:
                     else if ('\xFF' == aBuf[1])
                         // FE FF  UTF-16, big endian BOM
                         proberState = QEncodingProber::FoundIt;
-                        break;
+                    break;
                 case '\x00':
                     if (('\x00' == aBuf[1]) && ('\xFE' == aBuf[2]) && ('\xFF' == aBuf[3]))
                         // 00 00 FE FF  UTF-32, big-endian BOM
@@ -117,7 +111,7 @@ public:
                     else if (('\x00' == aBuf[1]) && ('\xFF' == aBuf[2]) && ('\xFE' == aBuf[3]))
                         // 00 00 FF FE  UCS-4, unusual octet order BOM (2143)
                         proberState = QEncodingProber::FoundIt;
-                        break;
+                    break;
                 case '\xFF':
                     if (('\xFE' == aBuf[1]) && ('\x00' == aBuf[2]) && ('\x00' == aBuf[3]))
                         // FF FE 00 00  UTF-32, little-endian BOM
@@ -125,8 +119,8 @@ public:
                     else if ('\xFE' == aBuf[1])
                         // FF FE  UTF-16, little endian BOM
                         proberState = QEncodingProber::FoundIt;
-                        break;
-            }  // switch
+                    break;
+                }  // switch
 
         }
     }
@@ -136,29 +130,24 @@ public:
     bool mStart;
 };
 
-QEncodingProber::QEncodingProber(QEncodingProber::ProberType proberType): d(new QEncodingProberPrivate())
-{
+QEncodingProber::QEncodingProber(QEncodingProber::ProberType proberType): d(new QEncodingProberPrivate()) {
     setProberType(proberType);
 }
 
-QEncodingProber::~QEncodingProber()
-{
+QEncodingProber::~QEncodingProber() {
     delete d;
 }
 
-void QEncodingProber::reset()
-{
+void QEncodingProber::reset() {
     d->proberState = QEncodingProber::Probing;
     d->mStart = true;
 }
 
-QEncodingProber::ProberState QEncodingProber::feed(const QByteArray &data)
-{
+QEncodingProber::ProberState QEncodingProber::feed(const QByteArray &data) {
     return feed(data.data(), data.size());
 }
 
-QEncodingProber::ProberState QEncodingProber::feed(const char* data, int len)
-{
+QEncodingProber::ProberState QEncodingProber::feed(const char* data, int len) {
     if (!d->prober)
         return d->proberState;
     if (d->proberState == Probing) {
@@ -168,17 +157,16 @@ QEncodingProber::ProberState QEncodingProber::feed(const char* data, int len)
                 return d->proberState;
         }
         d->prober->HandleData(data, len);
-        switch (d->prober->GetState())
-        {
-            case qencodingprober::eNotMe:
-                d->proberState = NotMe;
-                break;
-            case qencodingprober::eFoundIt:
-                d->proberState = FoundIt;
-                break;
-            default:
-                d->proberState = Probing;
-                break;
+        switch (d->prober->GetState()) {
+        case qencodingprober::eNotMe:
+            d->proberState = NotMe;
+            break;
+        case qencodingprober::eFoundIt:
+            d->proberState = FoundIt;
+            break;
+        default:
+            d->proberState = Probing;
+            break;
         }
     }
 #ifdef DEBUG_PROBE
@@ -187,8 +175,7 @@ QEncodingProber::ProberState QEncodingProber::feed(const char* data, int len)
     return d->proberState;
 }
 
-QEncodingProber::ProberState QEncodingProber::state() const
-{
+QEncodingProber::ProberState QEncodingProber::state() const {
     return d->proberState;
 }
 
@@ -200,35 +187,30 @@ QEncodingProber::ProberState QEncodingProber::state() const
 //}
 //#endif
 
-QByteArray QEncodingProber::encoding() const
-{
+QByteArray QEncodingProber::encoding() const {
     if (!d->prober)
         return QByteArray("UTF-8");
 
     return QByteArray(d->prober->GetCharSetName());
 }
 
-float QEncodingProber::confidence() const
-{
+float QEncodingProber::confidence() const {
     if (!d->prober)
         return 0.0;
 
     return d->prober->GetConfidence();
 }
 
-QEncodingProber::ProberType QEncodingProber::proberType() const
-{
+QEncodingProber::ProberType QEncodingProber::proberType() const {
     return d->proberType;
 }
 
-void QEncodingProber::setProberType(QEncodingProber::ProberType proberType)
-{
+void QEncodingProber::setProberType(QEncodingProber::ProberType proberType) {
     d->setProberType(proberType);
     reset();
 }
 
-QEncodingProber::ProberType QEncodingProber::proberTypeForName(const QString& lang)
-{
+QEncodingProber::ProberType QEncodingProber::proberTypeForName(const QString& lang) {
     if (lang.isEmpty())
         return QEncodingProber::Universal;
     else if (lang=="Disabled")
@@ -263,59 +245,57 @@ QEncodingProber::ProberType QEncodingProber::proberTypeForName(const QString& la
     return QEncodingProber::Universal;
 }
 
-QString QEncodingProber::nameForProberType(QEncodingProber::ProberType proberType)
-{
-    switch (proberType)
-    {
-        case QEncodingProber::None:
-            return "Disabled";
-            break;
-        case QEncodingProber::Universal:
-            return "Universal";
-            break;
-        case QEncodingProber::Arabic:
-            return "Arabic";
-            break;
-        case QEncodingProber::Baltic:
-            return "Baltic";
-            break;
-        case QEncodingProber::CentralEuropean:
-            return "Central European";
-            break;
-        case QEncodingProber::Cyrillic:
-            return "Cyrillic";
-            break;
-        case QEncodingProber::Greek:
-            return "Greek";
-            break;
-        case QEncodingProber::Hebrew:
-            return "Hebrew";
-            break;
-        case QEncodingProber::Japanese:
-            return "Japanese";
-            break;
-        case QEncodingProber::Turkish:
-            return "Turkish";
-            break;
-        case QEncodingProber::WesternEuropean:
-            return "Western European";
-            break;
-        case QEncodingProber::ChineseTraditional:
-            return "Chinese Traditional";
-            break;
-        case QEncodingProber::ChineseSimplified:
-            return "Chinese Simplified";
-            break;
-        case QEncodingProber::Korean:
-            return "Korean";
-            break;
-        case QEncodingProber::Thai:
-            return "Thai";
-            break;
-        case QEncodingProber::Unicode:
-            return "Unicode";
-            break;
-        default:
-            return QString();
-        }
+QString QEncodingProber::nameForProberType(QEncodingProber::ProberType proberType) {
+    switch (proberType) {
+    case QEncodingProber::None:
+        return "Disabled";
+        break;
+    case QEncodingProber::Universal:
+        return "Universal";
+        break;
+    case QEncodingProber::Arabic:
+        return "Arabic";
+        break;
+    case QEncodingProber::Baltic:
+        return "Baltic";
+        break;
+    case QEncodingProber::CentralEuropean:
+        return "Central European";
+        break;
+    case QEncodingProber::Cyrillic:
+        return "Cyrillic";
+        break;
+    case QEncodingProber::Greek:
+        return "Greek";
+        break;
+    case QEncodingProber::Hebrew:
+        return "Hebrew";
+        break;
+    case QEncodingProber::Japanese:
+        return "Japanese";
+        break;
+    case QEncodingProber::Turkish:
+        return "Turkish";
+        break;
+    case QEncodingProber::WesternEuropean:
+        return "Western European";
+        break;
+    case QEncodingProber::ChineseTraditional:
+        return "Chinese Traditional";
+        break;
+    case QEncodingProber::ChineseSimplified:
+        return "Chinese Simplified";
+        break;
+    case QEncodingProber::Korean:
+        return "Korean";
+        break;
+    case QEncodingProber::Thai:
+        return "Thai";
+        break;
+    case QEncodingProber::Unicode:
+        return "Unicode";
+        break;
+    default:
+        return QString();
+    }
 }

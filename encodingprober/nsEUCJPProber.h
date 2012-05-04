@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -38,24 +38,32 @@
 namespace qencodingprober {
 class  nsEUCJPProber: public nsCharSetProber {
 public:
-  nsEUCJPProber(void){mCodingSM = new nsCodingStateMachine(&EUCJPSMModel);
-                      Reset();};
-  virtual ~nsEUCJPProber(void){delete mCodingSM;};
-  nsProbingState HandleData(const char* aBuf, unsigned int aLen);
-  const char* GetCharSetName() {return "EUC-JP";};
-  nsProbingState GetState(void) {return mState;};
-  void      Reset(void);
-  float     GetConfidence(void);
-  void      SetOpion() {};
+    nsEUCJPProber(void) {
+        mCodingSM = new nsCodingStateMachine(&EUCJPSMModel);
+        Reset();
+    };
+    virtual ~nsEUCJPProber(void) {
+        delete mCodingSM;
+    };
+    nsProbingState HandleData(const char* aBuf, unsigned int aLen);
+    const char* GetCharSetName() {
+        return "EUC-JP";
+    };
+    nsProbingState GetState(void) {
+        return mState;
+    };
+    void      Reset(void);
+    float     GetConfidence(void);
+    void      SetOpion() {};
 
 protected:
-  nsCodingStateMachine* mCodingSM;
-  nsProbingState mState;
+    nsCodingStateMachine* mCodingSM;
+    nsProbingState mState;
 
-  EUCJPContextAnalysis mContextAnalyser;
-  EUCJPDistributionAnalysis mDistributionAnalyser;
+    EUCJPContextAnalysis mContextAnalyser;
+    EUCJPDistributionAnalysis mDistributionAnalyser;
 
-  char mLastChar[2];
+    char mLastChar[2];
 };
 }
 

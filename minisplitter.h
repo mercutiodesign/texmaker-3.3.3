@@ -43,8 +43,7 @@ QT_END_NAMESPACE
 
 
 /*! This is a simple helper-class to obtain mac-style 1-pixel wide splitters */
-class MiniSplitter : public QSplitter
-{
+class MiniSplitter : public QSplitter {
 public:
     MiniSplitter(QWidget *parent = 0);
     MiniSplitter(Qt::Orientation orientation);

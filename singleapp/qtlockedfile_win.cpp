@@ -36,13 +36,12 @@
 #define MUTEX_PREFIX "QtLockedFile mutex "
 #define SEMAPHORE_MAX 100
 
-static QString errorCodeToString(DWORD errorCode)
-{
+static QString errorCodeToString(DWORD errorCode) {
     QString result;
     char *data = 0;
     FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                    0, errorCode, 0,
-                    (char*)&data, 0, 0);
+                   0, errorCode, 0,
+                   (char*)&data, 0, 0);
     result = QString::fromLocal8Bit(data);
     if (data != 0)
         LocalFree(data);
@@ -53,8 +52,7 @@ static QString errorCodeToString(DWORD errorCode)
     return result;
 }
 
-bool QtLockedFile::lock(LockMode mode, bool block)
-{
+bool QtLockedFile::lock(LockMode mode, bool block) {
     if (!isOpen()) {
         qWarning("QtLockedFile::lock(): file is not opened");
         return false;
@@ -73,7 +71,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
 
         QT_WA( {
             m_semaphore_hnd = CreateSemaphoreW(0, SEMAPHORE_MAX, SEMAPHORE_MAX,
-                                               (TCHAR*)sem_name.utf16());
+            (TCHAR*)sem_name.utf16());
         } , {
             m_semaphore_hnd = CreateSemaphoreA(0, SEMAPHORE_MAX, SEMAPHORE_MAX,
                                                sem_name.toLocal8Bit().constData());
@@ -97,9 +95,9 @@ bool QtLockedFile::lock(LockMode mode, bool block)
             QString mut_name = QString::fromLatin1(MUTEX_PREFIX)
                                + fi.absoluteFilePath().toLower();
             QT_WA( {
-                    m_mutex_hnd = CreateMutexW(NULL, FALSE, (TCHAR*)mut_name.utf16());
-                } , {
-                    m_mutex_hnd = CreateMutexA(NULL, FALSE, mut_name.toLocal8Bit().constData());
+                m_mutex_hnd = CreateMutexW(NULL, FALSE, (TCHAR*)mut_name.utf16());
+            } , {
+                m_mutex_hnd = CreateMutexA(NULL, FALSE, mut_name.toLocal8Bit().constData());
             } );
 
             if (m_mutex_hnd == 0) {
@@ -133,12 +131,12 @@ bool QtLockedFile::lock(LockMode mode, bool block)
             if (gotMutex)
                 ReleaseMutex(m_mutex_hnd);
             return false;
-	}
+        }
         if (res != WAIT_OBJECT_0) {
             if (gotMutex)
                 ReleaseMutex(m_mutex_hnd);
             qWarning("QtLockedFile::lock(): WaitForSingleObject (semaphore): %s",
-                        errorCodeToString(GetLastError()).toLatin1().constData());
+                     errorCodeToString(GetLastError()).toLatin1().constData());
             return false;
         }
     }
@@ -149,8 +147,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
     return true;
 }
 
-bool QtLockedFile::unlock()
-{
+bool QtLockedFile::unlock() {
     if (!isOpen()) {
         qWarning("QtLockedFile::unlock(): file is not opened");
         return false;
@@ -168,7 +165,7 @@ bool QtLockedFile::unlock()
     DWORD ret = ReleaseSemaphore(m_semaphore_hnd, increment, 0);
     if (ret == 0) {
         qWarning("QtLockedFile::unlock(): ReleaseSemaphore: %s",
-                    errorCodeToString(GetLastError()).toLatin1().constData());
+                 errorCodeToString(GetLastError()).toLatin1().constData());
         return false;
     }
 
@@ -176,15 +173,14 @@ bool QtLockedFile::unlock()
     return true;
 }
 
-QtLockedFile::~QtLockedFile()
-{
+QtLockedFile::~QtLockedFile() {
     if (isOpen())
         unlock();
     if (m_mutex_hnd != 0) {
         DWORD ret = CloseHandle(m_mutex_hnd);
         if (ret == 0) {
             qWarning("QtLockedFile::~QtLockedFile(): CloseHandle (mutex): %s",
-                        errorCodeToString(GetLastError()).toLatin1().constData());
+                     errorCodeToString(GetLastError()).toLatin1().constData());
         }
         m_mutex_hnd = 0;
     }
@@ -192,7 +188,7 @@ QtLockedFile::~QtLockedFile()
         DWORD ret = CloseHandle(m_semaphore_hnd);
         if (ret == 0) {
             qWarning("QtLockedFile::~QtLockedFile(): CloseHandle (semaphore): %s",
-                        errorCodeToString(GetLastError()).toLatin1().constData());
+                     errorCodeToString(GetLastError()).toLatin1().constData());
         }
         m_semaphore_hnd = 0;
     }

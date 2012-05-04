@@ -21,93 +21,81 @@
 #include <QFontDatabase>
 #include <QDebug>
 
-XmlTagsListWidget::XmlTagsListWidget(QWidget *parent, QString file):QListWidget(parent)
-{
-QFile tagsFile(file);
-if (tagsFile.open(QFile::ReadOnly))
-    {
-    QDomDocument domDocument;
-    if (domDocument.setContent(&tagsFile))
-	{
-	QDomElement root = domDocument.documentElement();
-	if (root.tagName() == "texmakertags")
-	    {
-	    xmlSections=getTags(root);
-	    for (int i = 0; i < xmlSections.children.size(); ++i)
-		{
-		addListWidgetItems(xmlSections.children.at(i));
-		}
-	    }
-	}
+XmlTagsListWidget::XmlTagsListWidget(QWidget *parent, QString file):QListWidget(parent) {
+    QFile tagsFile(file);
+    if (tagsFile.open(QFile::ReadOnly)) {
+        QDomDocument domDocument;
+        if (domDocument.setContent(&tagsFile)) {
+            QDomElement root = domDocument.documentElement();
+            if (root.tagName() == "texmakertags") {
+                xmlSections=getTags(root);
+                for (int i = 0; i < xmlSections.children.size(); ++i) {
+                    addListWidgetItems(xmlSections.children.at(i));
+                }
+            }
+        }
     }
 }
 
-xmlTagList XmlTagsListWidget::getTags(const QDomElement &element)
-{
-xmlTag item;
-xmlTagList tagList;
-QList<xmlTag> tags;
-tagList.title = element.attribute("title");
-QDomElement child = element.firstChildElement("item");
-QString txt, code, type;
-while (!child.isNull())
-    {
-    code = child.attribute("tag");
-    code.replace("\\\\", "\\");
-    code.replace("&lt;", "<");
-    code.replace("&gt;", ">");
-    item.tag=code;
-    txt = child.attribute("txt");
-    if (txt!="")
-      {
-      txt.replace("\\\\", "\\");
-      txt.replace("&lt;", "<");
-      txt.replace("&gt;", ">");
-      }
-    else txt=code;
-    item.txt=txt;
-    item.dx=child.attribute("dx");
-    item.dy=child.attribute("dy");
-    item.type=child.attribute("type").toInt();
-    tags << item;
-    child = child.nextSiblingElement("item");
+xmlTagList XmlTagsListWidget::getTags(const QDomElement &element) {
+    xmlTag item;
+    xmlTagList tagList;
+    QList<xmlTag> tags;
+    tagList.title = element.attribute("title");
+    QDomElement child = element.firstChildElement("item");
+    QString txt, code, type;
+    while (!child.isNull()) {
+        code = child.attribute("tag");
+        code.replace("\\\\", "\\");
+        code.replace("&lt;", "<");
+        code.replace("&gt;", ">");
+        item.tag=code;
+        txt = child.attribute("txt");
+        if (txt!="") {
+            txt.replace("\\\\", "\\");
+            txt.replace("&lt;", "<");
+            txt.replace("&gt;", ">");
+        } else txt=code;
+        item.txt=txt;
+        item.dx=child.attribute("dx");
+        item.dy=child.attribute("dy");
+        item.type=child.attribute("type").toInt();
+        tags << item;
+        child = child.nextSiblingElement("item");
     }
-tagList.tags=tags;
-QDomElement section = element.firstChildElement("section");
-while (!section.isNull())
-    {
-    tagList.children << getTags(section);
-    section = section.nextSiblingElement("section");
+    tagList.tags=tags;
+    QDomElement section = element.firstChildElement("section");
+    while (!section.isNull()) {
+        tagList.children << getTags(section);
+        section = section.nextSiblingElement("section");
     }
-return tagList;
+    return tagList;
 }
 
-void XmlTagsListWidget::addListWidgetItems(const xmlTagList &tagList)
-{
-QFont deft=QFont("DejaVu Sans Condensed",qApp->font().pointSize());
-QFont titleFont = deft;//qApp->font();
-titleFont.setBold(true);
-QFont optionFont=deft;//qApp->font();
-optionFont.setItalic(true);
-QFont commandFont=deft;//qApp->font();
+void XmlTagsListWidget::addListWidgetItems(const xmlTagList &tagList) {
+    QFont deft=QFont("DejaVu Sans Condensed",qApp->font().pointSize());
+    QFont titleFont = deft;//qApp->font();
+    titleFont.setBold(true);
+    QFont optionFont=deft;//qApp->font();
+    optionFont.setItalic(true);
+    QFont commandFont=deft;//qApp->font();
 //QColor titleBg(QApplication::style()->standardPalette().color(QPalette::Normal, QPalette::Highlight));
 //QColor titleFg(QApplication::style()->standardPalette().color(QPalette::Normal, QPalette::HighlightedText));
-QColor titleBg("#447BCD");
-QColor titleFg("#ffffff");
-QListWidgetItem *item = new QListWidgetItem(this);
-QString itemText = tagList.title;
-item->setText(itemText);
-item->setBackgroundColor(titleBg);
-item->setTextColor(titleFg);
-item->setFont(titleFont);
-for (int i = 0; i < tagList.tags.size(); ++i)
-    {
+    QColor titleBg("#447BCD");
+    QColor titleFg("#ffffff");
     QListWidgetItem *item = new QListWidgetItem(this);
-    QString itemText = tagList.tags.at(i).txt;
+    QString itemText = tagList.title;
     item->setText(itemText);
-    QString role=tagList.tags.at(i).tag+"#"+tagList.tags.at(i).dx+"#"+tagList.tags.at(i).dy;
-    item->setData(Qt::UserRole,role);
-    if (tagList.tags.at(i).type==0) item->setFont(commandFont); 
-    else item->setFont(optionFont);
+    item->setBackgroundColor(titleBg);
+    item->setTextColor(titleFg);
+    item->setFont(titleFont);
+    for (int i = 0; i < tagList.tags.size(); ++i) {
+        QListWidgetItem *item = new QListWidgetItem(this);
+        QString itemText = tagList.tags.at(i).txt;
+        item->setText(itemText);
+        QString role=tagList.tags.at(i).tag+"#"+tagList.tags.at(i).dx+"#"+tagList.tags.at(i).dy;
+        item->setData(Qt::UserRole,role);
+        if (tagList.tags.at(i).type==0) item->setFont(commandFont);
+        else item->setFont(optionFont);
     }
 }

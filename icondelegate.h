@@ -21,8 +21,7 @@ class QAbstractItemModel;
 class QObject;
 class QPainter;
 
-class IconDelegate : public QAbstractItemDelegate
-{
+class IconDelegate : public QAbstractItemDelegate {
     Q_OBJECT
 
 public:

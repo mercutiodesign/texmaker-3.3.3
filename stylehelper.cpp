@@ -33,8 +33,7 @@
 #include <QtGui/QWidget>
 
 // Clamps float color values within (0, 255)
-static int clamp(float x)
-{
+static int clamp(float x) {
     const int val = x > 255 ? 255 : static_cast<int>(x);
     return val < 0 ? 0 : val;
 }
@@ -48,8 +47,7 @@ static int range(float x, int min, int max)
 }
 */
 
-qreal StyleHelper::sidebarFontSize()
-{
+qreal StyleHelper::sidebarFontSize() {
 #if defined(Q_OS_MAC)
     return 9;
 #else
@@ -57,8 +55,7 @@ qreal StyleHelper::sidebarFontSize()
 #endif
 }
 
-QPalette StyleHelper::sidebarFontPalette(const QPalette &original)
-{
+QPalette StyleHelper::sidebarFontPalette(const QPalette &original) {
     QPalette palette = original;
     palette.setColor(QPalette::Active, QPalette::Text, panelTextColor());
     palette.setColor(QPalette::Active, QPalette::WindowText, panelTextColor());
@@ -67,21 +64,18 @@ QPalette StyleHelper::sidebarFontPalette(const QPalette &original)
     return palette;
 }
 
-QColor StyleHelper::panelTextColor()
-{
+QColor StyleHelper::panelTextColor() {
     //qApp->palette().highlightedText().color();
     return Qt::white;
 }
 
 QColor StyleHelper::m_baseColor(0x556676);
 
-QColor StyleHelper::baseColor()
-{
+QColor StyleHelper::baseColor() {
     return m_baseColor;
 }
 
-QColor StyleHelper::highlightColor()
-{
+QColor StyleHelper::highlightColor() {
     QColor result = baseColor();
     result.setHsv(result.hue(),
                   clamp(result.saturation()),
@@ -89,8 +83,7 @@ QColor StyleHelper::highlightColor()
     return result;
 }
 
-QColor StyleHelper::shadowColor()
-{
+QColor StyleHelper::shadowColor() {
     QColor result = baseColor();
     result.setHsv(result.hue(),
                   clamp(result.saturation() * 1.1),
@@ -98,8 +91,7 @@ QColor StyleHelper::shadowColor()
     return result;
 }
 
-QColor StyleHelper::borderColor()
-{
+QColor StyleHelper::borderColor() {
     QColor result = baseColor();
     result.setHsv(result.hue(),
                   result.saturation(),
@@ -107,17 +99,15 @@ QColor StyleHelper::borderColor()
     return result;
 }
 
-void StyleHelper::setBaseColor(const QColor &color)
-{
+void StyleHelper::setBaseColor(const QColor &color) {
     if (color.isValid() && color != m_baseColor) {
         m_baseColor = color;
         foreach (QWidget *w, QApplication::topLevelWidgets())
-            w->update();
+        w->update();
     }
 }
 
-static QColor mergedColors(const QColor &colorA, const QColor &colorB, int factor = 50)
-{
+static QColor mergedColors(const QColor &colorA, const QColor &colorB, int factor = 50) {
     const int maxFactor = 100;
     QColor tmp = colorA;
     tmp.setRed((tmp.red() * factor) / maxFactor + (colorB.red() * (maxFactor - factor)) / maxFactor);
@@ -126,11 +116,10 @@ static QColor mergedColors(const QColor &colorA, const QColor &colorB, int facto
     return tmp;
 }
 
-void StyleHelper::verticalGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect)
-{
+void StyleHelper::verticalGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect) {
     QString key;
     key.sprintf("mh_toolbar %d %d %d %d %d", spanRect.width(), spanRect.height(), clipRect.width(),
-                                             clipRect.height(), StyleHelper::baseColor().rgb());;
+                clipRect.height(), StyleHelper::baseColor().rgb());;
     QPixmap pixmap;
     QPainter *p = painter;
     QRect rect = clipRect;
@@ -148,9 +137,9 @@ void StyleHelper::verticalGradient(QPainter *painter, const QRect &spanRect, con
     grad.setColorAt(0.901, base);
     grad.setColorAt(1, shadowColor());
 
-/*    grad.setColorAt(0, highlightColor());
-    grad.setColorAt(0.301, base);
-    grad.setColorAt(1, shadowColor());*/
+    /*    grad.setColorAt(0, highlightColor());
+        grad.setColorAt(0.301, base);
+        grad.setColorAt(1, shadowColor());*/
 
 
     QColor light(255, 255, 255, 80);
@@ -167,8 +156,7 @@ void StyleHelper::verticalGradient(QPainter *painter, const QRect &spanRect, con
 
 }
 
-void StyleHelper::horizontalGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect)
-{
+void StyleHelper::horizontalGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect) {
     QString key;
     key.sprintf("mh_toolbar %d %d %d %d %d", spanRect.width(), spanRect.height(),
                 clipRect.width(), clipRect.height(), StyleHelper::baseColor().rgb());
@@ -190,13 +178,13 @@ void StyleHelper::horizontalGradient(QPainter *painter, const QRect &spanRect, c
     grad.setColorAt(1, shadowColor());
     p->fillRect(rect, grad);
 
-/*    QLinearGradient shadowGradient(spanRect.topLeft(), spanRect.topRight());
-    shadowGradient.setColorAt(0, QColor(0, 0, 0, 30));
-    QColor highlight = highlightColor().lighter(130);
-    highlight.setAlpha(100);
-    shadowGradient.setColorAt(0.7, highlight);
-    shadowGradient.setColorAt(1, QColor(0, 0, 0, 40));
-    p->fillRect(rect, shadowGradient);*/
+    /*    QLinearGradient shadowGradient(spanRect.topLeft(), spanRect.topRight());
+        shadowGradient.setColorAt(0, QColor(0, 0, 0, 30));
+        QColor highlight = highlightColor().lighter(130);
+        highlight.setAlpha(100);
+        shadowGradient.setColorAt(0.7, highlight);
+        shadowGradient.setColorAt(1, QColor(0, 0, 0, 40));
+        p->fillRect(rect, shadowGradient);*/
 
     if (StyleHelper::usePixmapCache() && !QPixmapCache::find(key, pixmap)) {
         painter->drawPixmap(clipRect.topLeft(), pixmap);
@@ -206,11 +194,10 @@ void StyleHelper::horizontalGradient(QPainter *painter, const QRect &spanRect, c
     }
 }
 
-void StyleHelper::menuGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect)
-{
+void StyleHelper::menuGradient(QPainter *painter, const QRect &spanRect, const QRect &clipRect) {
     QString key;
     key.sprintf("mh_toolbar %d %d %d %d %d", spanRect.width(), spanRect.height(), clipRect.width(),
-                                             clipRect.height(), StyleHelper::baseColor().rgb());;
+                clipRect.height(), StyleHelper::baseColor().rgb());;
     QPixmap pixmap;
     QPainter *p = painter;
     QRect rect = clipRect;

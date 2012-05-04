@@ -14,37 +14,36 @@
 
 #include <QScrollArea>
 #include <QVBoxLayout>
-class PdfScrollArea : public QScrollArea
-{
-Q_OBJECT
+class PdfScrollArea : public QScrollArea {
+    Q_OBJECT
 
 public:
     PdfScrollArea( QWidget *parent);
     ~PdfScrollArea();
-QWidget *scrollAreaWidgetContents;
-QVBoxLayout *verticalLayout;
+    QWidget *scrollAreaWidgetContents;
+    QVBoxLayout *verticalLayout;
 signals:
-  void doScroll(int);
-  void doHScroll(int);
-  void doRange();
-  void pagezoomOut();
-  void pagezoomIn();
+    void doScroll(int);
+    void doHScroll(int);
+    void doRange();
+    void pagezoomOut();
+    void pagezoomIn();
 protected:
-  void wheelEvent( QWheelEvent *e );
-  void mousePressEvent(QMouseEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent( QWheelEvent *e );
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 private slots:
-  void scrollChanged(int value);
-  void sChanged(int value);
+    void scrollChanged(int value);
+    void sChanged(int value);
     void rChanged(int min,int max);
 public slots:
-void setVisible(int x, int y, int margin, int maxv);
-void pressHere(QPoint p);
-void moveHere(QPoint p);
+    void setVisible(int x, int y, int margin, int maxv);
+    void pressHere(QPoint p);
+    void moveHere(QPoint p);
 private:
-QPoint scrollPos;
-bool handmode;
+    QPoint scrollPos;
+    bool handmode;
 };
 
 #endif

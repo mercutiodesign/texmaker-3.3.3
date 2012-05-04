@@ -17,11 +17,11 @@
 
 
 class PaperDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	PaperDialog(QWidget *parent=0, const char *name=0);
-	~PaperDialog();
-	Ui::PaperDialog ui;
+    PaperDialog(QWidget *parent=0, const char *name=0);
+    ~PaperDialog();
+    Ui::PaperDialog ui;
 
 };
 

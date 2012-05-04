@@ -18,15 +18,15 @@
 
 
 class QuickDocumentDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	QuickDocumentDialog(QWidget *parent=0, const char *name=0);
-	~QuickDocumentDialog();
-	Ui::QuickDocumentDialog ui;
+    QuickDocumentDialog(QWidget *parent=0, const char *name=0);
+    ~QuickDocumentDialog();
+    Ui::QuickDocumentDialog ui;
 
 public:
 
-  QStringList otherClassList, otherPaperList, otherEncodingList, otherOptionsList, otherBabelList;
+    QStringList otherClassList, otherPaperList, otherEncodingList, otherOptionsList, otherBabelList;
 
 public slots:
     void Init();
@@ -37,7 +37,7 @@ private slots:
     void addUserOptions();
     void addUserBabel();
 private :
-AddOptionDialog *dlg;
+    AddOptionDialog *dlg;
 };
 
 

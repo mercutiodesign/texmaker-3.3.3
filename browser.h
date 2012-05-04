@@ -19,8 +19,7 @@
 #include <QWebView>
 
 
-class Browser : public QMainWindow
-{
+class Browser : public QMainWindow {
     Q_OBJECT
 public:
     Browser( const QString home, bool showToolBar=true, QWidget* parent = 0, Qt::WFlags flags = 0);
@@ -31,9 +30,9 @@ protected slots:
     void setProgress(int p);
     void finishLoading(bool);
 private slots:
-  void Index();
-  void Print();
-  void Find();
+    void Index();
+    void Print();
+    void Find();
 private:
     QWebView *view;
     int progress;

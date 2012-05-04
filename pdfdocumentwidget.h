@@ -1,7 +1,7 @@
 /****************************************************************************
 **
-**   copyright       : (C) 2003-2011 by Pascal Brachet                     
-**   http://www.xm1math.net/texmaker/                                      
+**   copyright       : (C) 2003-2011 by Pascal Brachet
+**   http://www.xm1math.net/texmaker/
 **
 ** addons by Adrián Yanes Martínez
 ** Parts of this file come from the documentation of Qt. It was originally
@@ -21,8 +21,7 @@
 #include <QTimer>
 #include "poppler-qt4.h"
 
-class PdfDocumentWidget : public QLabel
-{
+class PdfDocumentWidget : public QLabel {
     Q_OBJECT
 
 public:

@@ -25,26 +25,26 @@
 #include "minisplitter.h"
 
 class SourceView : public QWidget  {
-   Q_OBJECT
-public: 
-SourceView(QWidget *parent, QFont & efont,bool line, QList<QColor> edcolors, QList<QColor> hicolors);
-~SourceView();
-  LightLatexEditor *editor;
-  QToolBar *centralToolBar;
-  void changeSettings(QFont & new_font,bool line);
+    Q_OBJECT
+public:
+    SourceView(QWidget *parent, QFont & efont,bool line, QList<QColor> edcolors, QList<QColor> hicolors);
+    ~SourceView();
+    LightLatexEditor *editor;
+    QToolBar *centralToolBar;
+    void changeSettings(QFont & new_font,bool line);
 private:
-  MiniSplitter *splitter;
-  LightLineNumberWidget* m_lineNumberWidget;
-  void setLineNumberWidgetVisible( bool );
-  QStackedWidget *Stack;
-  QLabel* titleLabel;
-  LightFindWidget *findwidget;
-  LightGotoLineWidget *gotolinewidget;
-  QString lastdocument;
+    MiniSplitter *splitter;
+    LightLineNumberWidget* m_lineNumberWidget;
+    void setLineNumberWidgetVisible( bool );
+    QStackedWidget *Stack;
+    QLabel* titleLabel;
+    LightFindWidget *findwidget;
+    LightGotoLineWidget *gotolinewidget;
+    QString lastdocument;
 private slots:
-  void fileOpen();
-  void showFind();
-  void showGoto();
+    void fileOpen();
+    void showFind();
+    void showGoto();
 };
 
 #endif

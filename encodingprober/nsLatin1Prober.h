@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -32,24 +32,30 @@
 namespace qencodingprober {
 class  nsLatin1Prober: public nsCharSetProber {
 public:
-  nsLatin1Prober(void){Reset();};
-  virtual ~nsLatin1Prober(void){};
-  nsProbingState HandleData(const char* aBuf, unsigned int aLen);
-  const char* GetCharSetName() {return "windows-1252";};
-  nsProbingState GetState(void) {return mState;};
-  void      Reset(void);
-  float     GetConfidence(void);
-  void      SetOpion() {};
+    nsLatin1Prober(void) {
+        Reset();
+    };
+    virtual ~nsLatin1Prober(void) {};
+    nsProbingState HandleData(const char* aBuf, unsigned int aLen);
+    const char* GetCharSetName() {
+        return "windows-1252";
+    };
+    nsProbingState GetState(void) {
+        return mState;
+    };
+    void      Reset(void);
+    float     GetConfidence(void);
+    void      SetOpion() {};
 
 #ifdef DEBUG_PROBE
-  virtual void  DumpStatus();
+    virtual void  DumpStatus();
 #endif
 
 protected:
-  
-  nsProbingState mState;
-  char mLastCharClass;
-  unsigned int mFreqCounter[FREQ_CAT_NUM];
+
+    nsProbingState mState;
+    char mLastCharClass;
+    unsigned int mFreqCounter[FREQ_CAT_NUM];
 };
 }
 

@@ -24,8 +24,7 @@
 class QTextDocument;
 class LightLatexEditor;
 
-class LightLatexHighlighter : public QSyntaxHighlighter
-{
+class LightLatexHighlighter : public QSyntaxHighlighter {
     Q_OBJECT
 
 public:
@@ -34,16 +33,16 @@ public:
     QColor ColorStandard, ColorComment, ColorMath, ColorCommand, ColorKeyword, ColorVerbatim, ColorTodo, ColorKeywordGraphic, ColorNumberGraphic;
     QStringList KeyWords, KeyWordsGraphic, KeyWordsGraphicBis;
 public slots:
-void setColors(QList<QColor> colors);
-void SetEditor(LightLatexEditor *ed);
-void setModeGraphic(bool m);
+    void setColors(QList<QColor> colors);
+    void SetEditor(LightLatexEditor *ed);
+    void setModeGraphic(bool m);
 private :
-bool isWordSeparator(QChar c) const;
-bool isSpace(QChar c) const;
-bool isGraphic;
+    bool isWordSeparator(QChar c) const;
+    bool isSpace(QChar c) const;
+    bool isGraphic;
 protected:
-LightLatexEditor *editor;
-void highlightBlock(const QString &text);
+    LightLatexEditor *editor;
+    void highlightBlock(const QString &text);
 };
 
 

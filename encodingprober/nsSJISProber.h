@@ -51,24 +51,32 @@
 namespace qencodingprober {
 class nsSJISProber: public nsCharSetProber {
 public:
-  nsSJISProber(void){mCodingSM = new nsCodingStateMachine(&SJISSMModel);
-                      Reset();};
-  virtual ~nsSJISProber(void){delete mCodingSM;};
-  nsProbingState HandleData(const char* aBuf, unsigned int aLen);
-  const char* GetCharSetName() {return "Shift_JIS";};
-  nsProbingState GetState(void) {return mState;};
-  void      Reset(void);
-  float     GetConfidence(void);
-  void      SetOpion() {};
+    nsSJISProber(void) {
+        mCodingSM = new nsCodingStateMachine(&SJISSMModel);
+        Reset();
+    };
+    virtual ~nsSJISProber(void) {
+        delete mCodingSM;
+    };
+    nsProbingState HandleData(const char* aBuf, unsigned int aLen);
+    const char* GetCharSetName() {
+        return "Shift_JIS";
+    };
+    nsProbingState GetState(void) {
+        return mState;
+    };
+    void      Reset(void);
+    float     GetConfidence(void);
+    void      SetOpion() {};
 
 protected:
-  nsCodingStateMachine* mCodingSM;
-  nsProbingState mState;
+    nsCodingStateMachine* mCodingSM;
+    nsProbingState mState;
 
-  SJISContextAnalysis mContextAnalyser;
-  SJISDistributionAnalysis mDistributionAnalyser;
+    SJISContextAnalysis mContextAnalyser;
+    SJISDistributionAnalysis mDistributionAnalyser;
 
-  char mLastChar[2];
+    char mLastChar[2];
 
 };
 }

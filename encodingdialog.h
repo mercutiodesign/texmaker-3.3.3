@@ -17,11 +17,11 @@
 
 
 class EncodingDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	EncodingDialog(QWidget *parent=0, const char *name=0);
-	~EncodingDialog();
-	Ui::EncodingDialog ui;
+    EncodingDialog(QWidget *parent=0, const char *name=0);
+    ~EncodingDialog();
+    Ui::EncodingDialog ui;
 
 };
 

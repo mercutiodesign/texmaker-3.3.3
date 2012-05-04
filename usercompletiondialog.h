@@ -21,15 +21,15 @@
 
 
 class UserCompletionDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	UserCompletionDialog(QWidget *parent=0, QStringList extraCompletion=QStringList(""));
-	~UserCompletionDialog();
-	Ui::UserCompletionDialog ui;
-	QStringList userlist;
+    UserCompletionDialog(QWidget *parent=0, QStringList extraCompletion=QStringList(""));
+    ~UserCompletionDialog();
+    Ui::UserCompletionDialog ui;
+    QStringList userlist;
 private slots:
-void actionDelete();
-void actionAddCommand();
+    void actionDelete();
+    void actionAddCommand();
 };
 
 

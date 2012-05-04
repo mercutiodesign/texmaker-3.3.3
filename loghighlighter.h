@@ -21,8 +21,7 @@
 
 class QTextDocument;
 
-class LogHighlighter : public QSyntaxHighlighter
-{
+class LogHighlighter : public QSyntaxHighlighter {
     Q_OBJECT
 
 public:

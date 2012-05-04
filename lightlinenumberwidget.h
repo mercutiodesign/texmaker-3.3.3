@@ -19,15 +19,16 @@
 #include "lightlatexeditor.h"
 
 
-class LightLineNumberWidget: public QWidget
-{
+class LightLineNumberWidget: public QWidget {
     Q_OBJECT
 public:
     LightLineNumberWidget(LightLatexEditor*, QWidget* parent);
     virtual ~LightLineNumberWidget();
 
 public slots:
-    void doRepaint() { repaint(); }
+    void doRepaint() {
+        repaint();
+    }
     void setFont(QFont efont);
 
 protected:

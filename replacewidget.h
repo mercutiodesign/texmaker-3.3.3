@@ -15,8 +15,7 @@
 #include "ui_replacewidget.h"
 #include "latexeditor.h"
 
-class ReplaceWidget : public QWidget
-{ 
+class ReplaceWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -29,11 +28,11 @@ public slots:
     virtual void doReplaceAll();
     void SetEditor(LatexEditor *ed);
     void doHide();
-    
+
 protected:
     LatexEditor *editor;
 signals:
-void requestHide();
+    void requestHide();
 };
 
-#endif 
+#endif

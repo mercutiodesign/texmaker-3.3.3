@@ -19,15 +19,16 @@
 #include "latexeditor.h"
 
 
-class LineNumberWidget: public QWidget
-{
+class LineNumberWidget: public QWidget {
     Q_OBJECT
 public:
     LineNumberWidget(LatexEditor*, QWidget* parent);
     virtual ~LineNumberWidget();
 
 public slots:
-    void doRepaint() { repaint(); }
+    void doRepaint() {
+        repaint();
+    }
     void setFont(QFont efont);
     void setRange(int s, int e);
 

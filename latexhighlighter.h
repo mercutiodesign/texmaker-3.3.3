@@ -25,8 +25,7 @@
 class QTextDocument;
 class LatexEditor;
 
-class LatexHighlighter : public QSyntaxHighlighter
-{
+class LatexHighlighter : public QSyntaxHighlighter {
     Q_OBJECT
 
 public:
@@ -35,25 +34,25 @@ public:
     QColor ColorStandard, ColorComment, ColorMath, ColorCommand, ColorKeyword, ColorVerbatim, ColorTodo, ColorKeywordGraphic, ColorNumberGraphic;
     QStringList KeyWords, KeyWordsGraphic, KeyWordsGraphicBis;
     QTextCharFormat spellingErrorFormat;
-QStringList alwaysignoredwordList;
+    QStringList alwaysignoredwordList;
 public slots:
-void SetAlwaysIgnoredWords(QString ignoredWords);
-void setColors(QList<QColor> colors);
-void setSpellChecker(Hunspell * checker);
-void activateInlineSpell(bool enable);
-void SetEditor(LatexEditor *ed);
-void setModeGraphic(bool m);
+    void SetAlwaysIgnoredWords(QString ignoredWords);
+    void setColors(QList<QColor> colors);
+    void setSpellChecker(Hunspell * checker);
+    void activateInlineSpell(bool enable);
+    void SetEditor(LatexEditor *ed);
+    void setModeGraphic(bool m);
 private :
-QString spell_dic, spell_encoding;
-QStringList ignoredwordList, hardignoredwordList;
-Hunspell * pChecker;
-bool checkSpelling;
-bool isWordSeparator(QChar c) const;
-bool isSpace(QChar c) const;
-bool isGraphic;
+    QString spell_dic, spell_encoding;
+    QStringList ignoredwordList, hardignoredwordList;
+    Hunspell * pChecker;
+    bool checkSpelling;
+    bool isWordSeparator(QChar c) const;
+    bool isSpace(QChar c) const;
+    bool isGraphic;
 protected:
-LatexEditor *editor;
-void highlightBlock(const QString &text);
+    LatexEditor *editor;
+    void highlightBlock(const QString &text);
 };
 
 

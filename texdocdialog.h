@@ -14,11 +14,10 @@
 
 #include "ui_texdocdialog.h"
 
-class TexdocDialog : public QDialog
-{
+class TexdocDialog : public QDialog {
     Q_OBJECT
 
- public:
+public:
     TexdocDialog( QWidget *parent = 0);
     Ui::TexdocDialog ui;
 

@@ -20,110 +20,95 @@
 
 #include "ui_scandialog.h"
 
-class Scanner : public QThread
-{
-  Q_OBJECT
-  
-public:
-  explicit Scanner(QObject *parent = 0)
-    : QThread(parent), stopped(false)
-  {
-  }
+class Scanner : public QThread {
+    Q_OBJECT
 
-  void run()
-  {
-    fileList.clear();
-    numlineList.clear();
-    QStringList extensions;
-    extensions << "tex" << "bib" << "sty" << "cls" << "mp" << "Rnw" << "asy";
-    QStringList listoflines;
-    QDirIterator iterator(scanDir,isRecursive? QDirIterator::Subdirectories : QDirIterator::NoIteratorFlags);
-    while(!stopped && iterator.hasNext()) 
-    {
-      QString entry(iterator.next());
-      if(extensions.contains(QFileInfo(entry).suffix().toLower())) 
-      {
-	
-	QFile file(entry);
-	listoflines.clear();
-	
-        if (file.open(QIODevice::ReadOnly)) 
-	{
-            QString line;
-	   
-            QTextStream in(&file);
-	    int l=0;
-            while (!in.atEnd()) 
-	    {
-                if (stopped) break;
-                line = in.readLine();
-		l++;
-                if (line.contains(text)) listoflines << QString::number(l);
+public:
+    explicit Scanner(QObject *parent = 0)
+        : QThread(parent), stopped(false) {
+    }
+
+    void run() {
+        fileList.clear();
+        numlineList.clear();
+        QStringList extensions;
+        extensions << "tex" << "bib" << "sty" << "cls" << "mp" << "Rnw" << "asy";
+        QStringList listoflines;
+        QDirIterator iterator(scanDir,isRecursive? QDirIterator::Subdirectories : QDirIterator::NoIteratorFlags);
+        while(!stopped && iterator.hasNext()) {
+            QString entry(iterator.next());
+            if(extensions.contains(QFileInfo(entry).suffix().toLower())) {
+
+                QFile file(entry);
+                listoflines.clear();
+
+                if (file.open(QIODevice::ReadOnly)) {
+                    QString line;
+
+                    QTextStream in(&file);
+                    int l=0;
+                    while (!in.atEnd()) {
+                        if (stopped) break;
+                        line = in.readLine();
+                        l++;
+                        if (line.contains(text)) listoflines << QString::number(l);
+                    }
+                }
+
+                if (listoflines.count()>0) {
+                    fileList << entry;
+                    numlineList << listoflines.join(",");
+                    emit fileCountChanged(fileList.count());
+                }
             }
         }
-	
-	if (listoflines.count()>0) 
-	{
-	fileList << entry;
-	numlineList << listoflines.join(",");
-	emit fileCountChanged(fileList.count());
-	}
-      }
+        quit();
     }
-  quit(); 
-  }
-  
-  void setRecursive(bool rec)
-  {
-  isRecursive=rec;  
-  }
-  
-  void setDir(const QDir &dir)
-  {
-  scanDir=dir;  
-  }
 
-  void setText(const QString &t)
-  {
-  text=t;  
-  }
+    void setRecursive(bool rec) {
+        isRecursive=rec;
+    }
 
-  QStringList files() const
-  {
-    return fileList;
-  }
-  
-  QStringList lines() const
-  {
-    return numlineList;
-  }
+    void setDir(const QDir &dir) {
+        scanDir=dir;
+    }
+
+    void setText(const QString &t) {
+        text=t;
+    }
+
+    QStringList files() const {
+        return fileList;
+    }
+
+    QStringList lines() const {
+        return numlineList;
+    }
 
 public slots:
-  void stop()
-  {
-    stopped = true;
-  }
+    void stop() {
+        stopped = true;
+    }
 
 signals:
-  void fileCountChanged(int);
+    void fileCountChanged(int);
 
 private:
-  QStringList fileList, numlineList;
-  bool stopped;
-  bool isRecursive;
-  QDir scanDir;
-  QString text;
+    QStringList fileList, numlineList;
+    bool stopped;
+    bool isRecursive;
+    QDir scanDir;
+    QString text;
 };
 
-class ScanDialog : public QDialog
-{
+class ScanDialog : public QDialog {
     Q_OBJECT
-public: 
-	ScanDialog(QWidget *parent = 0, const char *name = 0);
-	~ScanDialog();
-	Ui::ScanDialog ui;
+public:
+    ScanDialog(QWidget *parent = 0, const char *name = 0);
+    ~ScanDialog();
+    Ui::ScanDialog ui;
 private:
-Scanner* scanthread;
+    Scanner* scanthread;
 private slots:
     void browse();
     void find();
@@ -132,7 +117,7 @@ private slots:
     void setFileCount(int cnt);
     void ClickedOnResult(QTreeWidgetItem* item,int c);
 signals:
-  void openFileAtLine(QString,int,bool);
+    void openFileAtLine(QString,int,bool);
 };
 
 #endif

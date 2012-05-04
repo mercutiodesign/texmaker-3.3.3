@@ -14,38 +14,36 @@
 
 #include "ui_tabdialog.h"
 
-struct colData
-    {
+struct colData {
     int alignment;
     int leftborder;
-    };
-struct liData
-    {
+};
+struct liData {
     bool topborder;
     bool merge;
     int mergefrom;
     int mergeto;
-    };
+};
 class TabDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	TabDialog(QWidget *parent=0, const char *name=0);
-	~TabDialog();
-	Ui::TabDialog ui;
-QList<colData> colDataList;
-QList<liData> liDataList;
+    TabDialog(QWidget *parent=0, const char *name=0);
+    ~TabDialog();
+    Ui::TabDialog ui;
+    QList<colData> colDataList;
+    QList<liData> liDataList;
 private slots:
-  void NewRows(int num);
-  void NewColumns(int num);
-  void updateSpanStatus(bool enabled);
-  void applytoAllColumns();
-  void applytoAllLines();
-  void updateColSettings();
-  void updateRowSettings();
-  void showColSettings(int column);
-  void showRowSettings(int row);
-  void showColRowSettings(int row,int column);
-  void updateTableWidget();
+    void NewRows(int num);
+    void NewColumns(int num);
+    void updateSpanStatus(bool enabled);
+    void applytoAllColumns();
+    void applytoAllLines();
+    void updateColSettings();
+    void updateRowSettings();
+    void showColSettings(int column);
+    void showRowSettings(int row);
+    void showColRowSettings(int row,int column);
+    void updateTableWidget();
 };
 
 

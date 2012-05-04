@@ -40,8 +40,7 @@ QT_END_NAMESPACE
 
 class ManhattanStylePrivate;
 
-class ManhattanStyle : public QWindowsStyle
-{
+class ManhattanStyle : public QWindowsStyle {
     Q_OBJECT;
 
 public:

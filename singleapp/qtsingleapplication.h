@@ -31,8 +31,7 @@
 
 class QtLocalPeer;
 
-class QtSingleApplication : public QApplication
-{
+class QtSingleApplication : public QApplication {
     Q_OBJECT
 
 public:
@@ -58,8 +57,9 @@ public Q_SLOTS:
 
 //Obsolete methods:
 public:
-    void initialize(bool = true)
-        { isRunning(); }
+    void initialize(bool = true) {
+        isRunning();
+    }
 
 #if defined(Q_WS_X11)
     QtSingleApplication(Display* dpy, const QString &id, int argc, char **argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0);

@@ -48,8 +48,7 @@ static PProcessIdToSessionId pProcessIdToSessionId = 0;
 const char *QtLocalPeer::ack = "ack";
 
 QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId)
-    : QObject(parent), id(appId)
-{
+    : QObject(parent), id(appId) {
     if (id.isEmpty())
         id = QCoreApplication::applicationFilePath();  //### On win, check if this returns .../argv[0] without casefolding; .\MYAPP == .\myapp on Win
 
@@ -81,8 +80,7 @@ QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId)
     lockFile.open(QIODevice::ReadWrite);
 }
 
-bool QtLocalPeer::isClient()
-{
+bool QtLocalPeer::isClient() {
     if (lockFile.isLocked())
         return false;
 
@@ -98,8 +96,7 @@ bool QtLocalPeer::isClient()
     return false;
 }
 
-bool QtLocalPeer::sendMessage(const QString &message, int timeout)
-{
+bool QtLocalPeer::sendMessage(const QString &message, int timeout) {
     if (!isClient())
         return false;
 
@@ -131,8 +128,7 @@ bool QtLocalPeer::sendMessage(const QString &message, int timeout)
     return res;
 }
 
-void QtLocalPeer::receiveConnection()
-{
+void QtLocalPeer::receiveConnection() {
     QLocalSocket* socket = server->nextPendingConnection();
     if (!socket)
         return;

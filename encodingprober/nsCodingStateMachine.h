@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -33,49 +33,53 @@
 #include "nsPkgInt.h"
 namespace qencodingprober {
 typedef enum {
-   eStart = 0,
-   eError = 1,
-   eItsMe = 2 
+    eStart = 0,
+    eError = 1,
+    eItsMe = 2
 } nsSMState;
 
 #define GETCLASS(c) GETFROMPCK(((unsigned char)(c)), mModel->classTable)
 
 //state machine model
-typedef struct 
-{
-  nsPkgInt classTable;
-  unsigned int classFactor;
-  nsPkgInt stateTable;
-  const unsigned int* charLenTable;
-  const char* name;
+typedef struct {
+    nsPkgInt classTable;
+    unsigned int classFactor;
+    nsPkgInt stateTable;
+    const unsigned int* charLenTable;
+    const char* name;
 } SMModel;
 
 class  nsCodingStateMachine {
 public:
-  nsCodingStateMachine(SMModel* sm){
-          mCurrentState = eStart;
-          mModel = sm;
-        };
-  nsSMState NextState(char c){
-    //for each byte we get its class  , if it is first byte, we also get byte length
-    unsigned int byteCls = GETCLASS(c);
-    if (mCurrentState == eStart)
-    { 
-      mCurrentBytePos = 0; 
-      mCurrentCharLen = mModel->charLenTable[byteCls];
-    }
-    //from byte's class  and stateTable, we get its next state
-    mCurrentState=(nsSMState)GETFROMPCK(mCurrentState*(mModel->classFactor)+byteCls,
-                                       mModel->stateTable);
-    mCurrentBytePos++;
-    return mCurrentState;
-  };
-  unsigned int  GetCurrentCharLen(void) {return mCurrentCharLen;};
-  void      Reset(void) {mCurrentState = eStart;};
-  const char * GetCodingStateMachine() {return mModel->name;};
+    nsCodingStateMachine(SMModel* sm) {
+        mCurrentState = eStart;
+        mModel = sm;
+    };
+    nsSMState NextState(char c) {
+        //for each byte we get its class  , if it is first byte, we also get byte length
+        unsigned int byteCls = GETCLASS(c);
+        if (mCurrentState == eStart) {
+            mCurrentBytePos = 0;
+            mCurrentCharLen = mModel->charLenTable[byteCls];
+        }
+        //from byte's class  and stateTable, we get its next state
+        mCurrentState=(nsSMState)GETFROMPCK(mCurrentState*(mModel->classFactor)+byteCls,
+                                            mModel->stateTable);
+        mCurrentBytePos++;
+        return mCurrentState;
+    };
+    unsigned int  GetCurrentCharLen(void) {
+        return mCurrentCharLen;
+    };
+    void      Reset(void) {
+        mCurrentState = eStart;
+    };
+    const char * GetCodingStateMachine() {
+        return mModel->name;
+    };
 #ifdef DEBUG_PROBE
-  const char * DumpCurrentState(){
-    switch (mCurrentState) {
+    const char * DumpCurrentState() {
+        switch (mCurrentState) {
         case eStart:
             return "eStart";
         case eError:
@@ -84,16 +88,16 @@ public:
             return "eItsMe";
         default:
             return "OK";
+        }
     }
-  }
 #endif
 
 protected:
-  nsSMState mCurrentState;
-  unsigned int mCurrentCharLen;
-  unsigned int mCurrentBytePos;
+    nsSMState mCurrentState;
+    unsigned int mCurrentCharLen;
+    unsigned int mCurrentBytePos;
 
-  SMModel *mModel;
+    SMModel *mModel;
 };
 
 extern  SMModel UTF8SMModel;

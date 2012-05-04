@@ -16,12 +16,11 @@
 #include <QTranslator>
 #include "texmaker.h"
 
-class TexmakerApp : public QtSingleApplication
-{
+class TexmakerApp : public QtSingleApplication {
 public:
     TexmakerApp(const QString &id, int & argc, char ** argv );
     ~TexmakerApp();
-    Texmaker *mw;  
+    Texmaker *mw;
     void init( QStringList args );  // This function does all the initialization instead of the constructor.
     void makeTranslation(const QString &lang);
     QList<QTranslator*> translatorsList;
@@ -38,8 +37,7 @@ protected:
 #endif
 
 };
-inline TexmakerApp *TexmakerApp::instance()
-{
-	return theAppInstance;
+inline TexmakerApp *TexmakerApp::instance() {
+    return theAppInstance;
 }
 #endif

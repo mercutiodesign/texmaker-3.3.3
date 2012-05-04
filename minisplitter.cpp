@@ -39,12 +39,10 @@
 #include <QtGui/QPainter>
 #include <QtGui/QSplitterHandle>
 
-class MiniSplitterHandle : public QSplitterHandle
-{
+class MiniSplitterHandle : public QSplitterHandle {
 public:
     MiniSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
-            : QSplitterHandle(orientation, parent)
-    {
+        : QSplitterHandle(orientation, parent) {
         setMask(QRegion(contentsRect()));
         setAttribute(Qt::WA_MouseNoMask, true);
     }
@@ -54,8 +52,7 @@ protected:
 };
 
 
-void MiniSplitterHandle::resizeEvent(QResizeEvent *event)
-{
+void MiniSplitterHandle::resizeEvent(QResizeEvent *event) {
     if (orientation() == Qt::Horizontal)
         setContentsMargins(2, 0, 2, 0);
     else
@@ -64,28 +61,24 @@ void MiniSplitterHandle::resizeEvent(QResizeEvent *event)
     QSplitterHandle::resizeEvent(event);
 }
 
-void MiniSplitterHandle::paintEvent(QPaintEvent *event)
-{
+void MiniSplitterHandle::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.fillRect(event->rect(), StyleHelper::borderColor());
 }
 
-QSplitterHandle *MiniSplitter::createHandle()
-{
+QSplitterHandle *MiniSplitter::createHandle() {
     return new MiniSplitterHandle(orientation(), this);
 }
 
 MiniSplitter::MiniSplitter(QWidget *parent)
-    : QSplitter(parent)
-{
+    : QSplitter(parent) {
     setHandleWidth(1);
     setChildrenCollapsible(false);
     setProperty("minisplitter", true);
 }
 
 MiniSplitter::MiniSplitter(Qt::Orientation orientation)
-    : QSplitter(orientation)
-{
+    : QSplitter(orientation) {
     setHandleWidth(1);
     setChildrenCollapsible(false);
     setProperty("minisplitter", true);

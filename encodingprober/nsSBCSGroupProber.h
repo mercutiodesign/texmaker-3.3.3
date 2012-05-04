@@ -46,25 +46,27 @@
 namespace qencodingprober {
 class  nsSBCSGroupProber: public nsCharSetProber {
 public:
-  nsSBCSGroupProber();
-  virtual ~nsSBCSGroupProber();
-  nsProbingState HandleData(const char* aBuf, unsigned int aLen);
-  const char* GetCharSetName();
-  nsProbingState GetState(void) {return mState;};
-  void      Reset(void);
-  float     GetConfidence(void);
-  void      SetOpion() {};
+    nsSBCSGroupProber();
+    virtual ~nsSBCSGroupProber();
+    nsProbingState HandleData(const char* aBuf, unsigned int aLen);
+    const char* GetCharSetName();
+    nsProbingState GetState(void) {
+        return mState;
+    };
+    void      Reset(void);
+    float     GetConfidence(void);
+    void      SetOpion() {};
 
 #ifdef DEBUG_PROBE
-  void  DumpStatus();
+    void  DumpStatus();
 #endif
 
 protected:
-  nsProbingState mState;
-  nsCharSetProber* mProbers[NUM_OF_SBCS_PROBERS];
-  bool          mIsActive[NUM_OF_SBCS_PROBERS];
-  int mBestGuess;
-  unsigned int mActiveNum;
+    nsProbingState mState;
+    nsCharSetProber* mProbers[NUM_OF_SBCS_PROBERS];
+    bool          mIsActive[NUM_OF_SBCS_PROBERS];
+    int mBestGuess;
+    unsigned int mActiveNum;
 };
 }
 

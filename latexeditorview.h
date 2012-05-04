@@ -25,24 +25,24 @@
 #include "hunspell/hunspell.hxx"
 
 class LatexEditorView : public QWidget  {
-   Q_OBJECT
-public: 
-	LatexEditorView(QWidget *parent, QFont & efont,bool line,QList<QColor> edcolors, QList<QColor> hicolors,bool inlinespelling=false, QString ignoredWords="",Hunspell *spellChecker=0,bool tabspaces=false,int tabwidth=4,const QKeySequence viewfocus=QKeySequence("Ctrl+Space"), QString name="", QStringList ulist=QStringList());
-	~LatexEditorView();
-  LatexEditor *editor;
-  void changeSettings(QFont & new_font,bool line);
-  void showFind();
-  void showFindNext();
-  void showGoto();
-  void showReplace();
+    Q_OBJECT
+public:
+    LatexEditorView(QWidget *parent, QFont & efont,bool line,QList<QColor> edcolors, QList<QColor> hicolors,bool inlinespelling=false, QString ignoredWords="",Hunspell *spellChecker=0,bool tabspaces=false,int tabwidth=4,const QKeySequence viewfocus=QKeySequence("Ctrl+Space"), QString name="", QStringList ulist=QStringList());
+    ~LatexEditorView();
+    LatexEditor *editor;
+    void changeSettings(QFont & new_font,bool line);
+    void showFind();
+    void showFindNext();
+    void showGoto();
+    void showReplace();
 private:
-  MiniSplitter *splitter;
-  LineNumberWidget* m_lineNumberWidget;
-  void setLineNumberWidgetVisible( bool );
-  QStackedWidget *Stack;
-  FindWidget *findwidget;
-  ReplaceWidget *replacewidget;
-  GotoLineWidget *gotolinewidget;
+    MiniSplitter *splitter;
+    LineNumberWidget* m_lineNumberWidget;
+    void setLineNumberWidgetVisible( bool );
+    QStackedWidget *Stack;
+    FindWidget *findwidget;
+    ReplaceWidget *replacewidget;
+    GotoLineWidget *gotolinewidget;
 };
 
 #endif

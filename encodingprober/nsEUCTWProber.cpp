@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -26,61 +26,52 @@
 #include "nsEUCTWProber.h"
 
 namespace qencodingprober {
-void  nsEUCTWProber::Reset(void)
-{
-  mCodingSM->Reset(); 
-  mState = eDetecting;
-  mDistributionAnalyser.Reset();
-  //mContextAnalyser.Reset();
+void  nsEUCTWProber::Reset(void) {
+    mCodingSM->Reset();
+    mState = eDetecting;
+    mDistributionAnalyser.Reset();
+    //mContextAnalyser.Reset();
 }
 
-nsProbingState nsEUCTWProber::HandleData(const char* aBuf, unsigned int aLen)
-{
-  nsSMState codingState;
+nsProbingState nsEUCTWProber::HandleData(const char* aBuf, unsigned int aLen) {
+    nsSMState codingState;
 
-  for (unsigned int i = 0; i < aLen; i++)
-  {
-    codingState = mCodingSM->NextState(aBuf[i]);
-    if (codingState == eError)
-    {
-      mState = eNotMe;
-      break;
+    for (unsigned int i = 0; i < aLen; i++) {
+        codingState = mCodingSM->NextState(aBuf[i]);
+        if (codingState == eError) {
+            mState = eNotMe;
+            break;
+        }
+        if (codingState == eItsMe) {
+            mState = eFoundIt;
+            break;
+        }
+        if (codingState == eStart) {
+            unsigned int charLen = mCodingSM->GetCurrentCharLen();
+
+            if (i == 0) {
+                mLastChar[1] = aBuf[0];
+                mDistributionAnalyser.HandleOneChar(mLastChar, charLen);
+            } else
+                mDistributionAnalyser.HandleOneChar(aBuf+i-1, charLen);
+        }
     }
-    if (codingState == eItsMe)
-    {
-      mState = eFoundIt;
-      break;
-    }
-    if (codingState == eStart)
-    {
-      unsigned int charLen = mCodingSM->GetCurrentCharLen();
 
-      if (i == 0)
-      {
-        mLastChar[1] = aBuf[0];
-        mDistributionAnalyser.HandleOneChar(mLastChar, charLen);
-      }
-      else
-        mDistributionAnalyser.HandleOneChar(aBuf+i-1, charLen);
-    }
-  }
+    mLastChar[0] = aBuf[aLen-1];
 
-  mLastChar[0] = aBuf[aLen-1];
-
-  if (mState == eDetecting)
-    if (mDistributionAnalyser.GotEnoughData() && GetConfidence() > SHORTCUT_THRESHOLD)
-      mState = eFoundIt;
+    if (mState == eDetecting)
+        if (mDistributionAnalyser.GotEnoughData() && GetConfidence() > SHORTCUT_THRESHOLD)
+            mState = eFoundIt;
 //    else
 //      mDistributionAnalyser.HandleData(aBuf, aLen);
 
-  return mState;
+    return mState;
 }
 
-float nsEUCTWProber::GetConfidence(void)
-{
-  float distribCf = mDistributionAnalyser.GetConfidence();
+float nsEUCTWProber::GetConfidence(void) {
+    float distribCf = mDistributionAnalyser.GetConfidence();
 
-  return (float)distribCf;
+    return (float)distribCf;
 }
 }
 

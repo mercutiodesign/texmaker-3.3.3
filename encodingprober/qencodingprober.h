@@ -60,8 +60,7 @@ class QEncodingProberPrivate;
  * @short Guess encoding of char array
  *
  */
-class QEncodingProber
-{
+class QEncodingProber {
 public:
 
     enum ProberState {

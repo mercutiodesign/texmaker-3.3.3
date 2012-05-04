@@ -16,26 +16,24 @@
 #include <QStringList>
 
 
-int main( int argc, char ** argv )
-{
-TexmakerApp app("TexMaker", argc, argv ); // This is a dummy constructor so that the programs loads fast.
+int main( int argc, char ** argv ) {
+    TexmakerApp app("TexMaker", argc, argv ); // This is a dummy constructor so that the programs loads fast.
 
-QStringList args = QCoreApplication::arguments();//add by S. R. Alavizadeh
+    QStringList args = QCoreApplication::arguments();//add by S. R. Alavizadeh
 //for ( int i=0; i < argc; i++) args += QString::fromLocal8Bit(argv[i]);
 
-if ( app.isRunning() ) 
-    {
-    QString msg;
-    msg = args.join("#!#");
-    msg += "#!#";
-    app.sendMessage( msg );
-    return 0;
+    if ( app.isRunning() ) {
+        QString msg;
+        msg = args.join("#!#");
+        msg += "#!#";
+        app.sendMessage( msg );
+        return 0;
     }
 
-app.init(args); // Initialization takes place only if there is no other instance running.
+    app.init(args); // Initialization takes place only if there is no other instance running.
 
-QObject::connect( &app, SIGNAL( messageReceived(const QString &) ), 
-                  app.mw,   SLOT( onOtherInstanceMessage(const QString &) ) );
+    QObject::connect( &app, SIGNAL( messageReceived(const QString &) ),
+                      app.mw,   SLOT( onOtherInstanceMessage(const QString &) ) );
 
-return app.exec();
+    return app.exec();
 }

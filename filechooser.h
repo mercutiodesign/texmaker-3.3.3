@@ -14,11 +14,10 @@
 
 #include "ui_filechooser.h"
 
-class FileChooser : public QDialog
-{
+class FileChooser : public QDialog {
     Q_OBJECT
 
- public:
+public:
     FileChooser( QWidget *parent = 0, QString name="");
     Ui::FileChooser ui;
     QString fileName() const;

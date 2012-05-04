@@ -8,7 +8,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef USERMENUDIALOG_H
 #define USERMENUDIALOG_H
 
@@ -17,8 +17,7 @@
 
 typedef QString userlist[10];
 
-class UserMenuDialog : public QDialog
-{
+class UserMenuDialog : public QDialog {
     Q_OBJECT
 
 public:

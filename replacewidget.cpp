@@ -13,73 +13,63 @@
 #include <QMessageBox>
 
 ReplaceWidget::ReplaceWidget(QWidget* parent)
-    : QWidget( parent)
-{
-ui.setupUi(this);
-connect( ui.findButton, SIGNAL( clicked() ), this, SLOT( doReplace() ) );
-connect( ui.replaceallButton, SIGNAL( clicked() ), this, SLOT( doReplaceAll() ) );
-connect( ui.closeButton, SIGNAL( clicked() ), this, SLOT( doHide() ) );
-ui.findButton->setShortcut(Qt::Key_Return);
-ui.findButton->setToolTip("Return");
-ui.closeButton->setShortcut(Qt::Key_Escape);
-ui.closeButton->setToolTip("Escape");
+    : QWidget( parent) {
+    ui.setupUi(this);
+    connect( ui.findButton, SIGNAL( clicked() ), this, SLOT( doReplace() ) );
+    connect( ui.replaceallButton, SIGNAL( clicked() ), this, SLOT( doReplaceAll() ) );
+    connect( ui.closeButton, SIGNAL( clicked() ), this, SLOT( doHide() ) );
+    ui.findButton->setShortcut(Qt::Key_Return);
+    ui.findButton->setToolTip("Return");
+    ui.closeButton->setShortcut(Qt::Key_Escape);
+    ui.closeButton->setToolTip("Escape");
 }
 
 
-ReplaceWidget::~ReplaceWidget()
-{
+ReplaceWidget::~ReplaceWidget() {
 }
 
-void ReplaceWidget::doReplace()
-{
-doHide();
-if ( !editor ) return;
-bool go=true;
-while (go && editor->search( ui.comboFind->currentText(), ui.checkCase->isChecked(),
-	ui.checkWords->isChecked(), ui.radioForward->isChecked(), !ui.checkBegin->isChecked()) )
-       {
-       switch(  QMessageBox::warning(this, "Texmaker",tr("Replace this occurence ? "),tr("Yes"), tr("No"), tr("Cancel"), 0,2 ) )
-         {
-         case 0:
-         editor->replace(ui.comboReplace->currentText() );
-         ui.checkBegin->setChecked( FALSE );
-    	   break;
-         case 1:
-         ui.checkBegin->setChecked( FALSE );
-    	   break;
-         case 2:
-         go=false;
-    	   break;
-         }
-       }
-if (go) ui.checkBegin->setChecked( TRUE );
-}
-
-void ReplaceWidget::doReplaceAll()
-{
-if ( !editor ) return;
-while ( editor->search( ui.comboFind->currentText(), ui.checkCase->isChecked(),
-ui.checkWords->isChecked(), ui.radioForward->isChecked(), !ui.checkBegin->isChecked()) )
-    {
-    editor->replace(ui.comboReplace->currentText() );
-    ui.checkBegin->setChecked( FALSE );
+void ReplaceWidget::doReplace() {
+    doHide();
+    if ( !editor ) return;
+    bool go=true;
+    while (go && editor->search( ui.comboFind->currentText(), ui.checkCase->isChecked(),
+                                 ui.checkWords->isChecked(), ui.radioForward->isChecked(), !ui.checkBegin->isChecked()) ) {
+        switch(  QMessageBox::warning(this, "Texmaker",tr("Replace this occurence ? "),tr("Yes"), tr("No"), tr("Cancel"), 0,2 ) ) {
+        case 0:
+            editor->replace(ui.comboReplace->currentText() );
+            ui.checkBegin->setChecked( FALSE );
+            break;
+        case 1:
+            ui.checkBegin->setChecked( FALSE );
+            break;
+        case 2:
+            go=false;
+            break;
+        }
     }
-ui.checkBegin->setChecked( TRUE );
+    if (go) ui.checkBegin->setChecked( TRUE );
 }
 
-void ReplaceWidget::SetEditor(LatexEditor *ed)
-{
-editor=ed;
+void ReplaceWidget::doReplaceAll() {
+    if ( !editor ) return;
+    while ( editor->search( ui.comboFind->currentText(), ui.checkCase->isChecked(),
+                            ui.checkWords->isChecked(), ui.radioForward->isChecked(), !ui.checkBegin->isChecked()) ) {
+        editor->replace(ui.comboReplace->currentText() );
+        ui.checkBegin->setChecked( FALSE );
+    }
+    ui.checkBegin->setChecked( TRUE );
 }
 
-void ReplaceWidget::doHide()
-{
-emit requestHide();
-if ( editor ) 
-	{
-	editor->viewport()->repaint();
-	editor->setFocus();
-	}
+void ReplaceWidget::SetEditor(LatexEditor *ed) {
+    editor=ed;
+}
+
+void ReplaceWidget::doHide() {
+    emit requestHide();
+    if ( editor ) {
+        editor->viewport()->repaint();
+        editor->setFocus();
+    }
 }
 
 

@@ -13,26 +13,25 @@
 
 
 PaperDialog::PaperDialog(QWidget *parent, const char *name)
-    :QDialog( parent)
-{
-setWindowTitle("Texmaker");
-setModal(true);
-ui.setupUi(this);
-ui.comboBoxPaper->addItem( "a1" );
-ui.comboBoxPaper->addItem( "a2" );
-ui.comboBoxPaper->addItem( "a3" );
-ui.comboBoxPaper->addItem( "a4" );
-ui.comboBoxPaper->addItem( "a5" );
-ui.comboBoxPaper->addItem( "a6" );
-ui.comboBoxPaper->addItem( "a7" );
-ui.comboBoxPaper->addItem( "a8" );
-ui.comboBoxPaper->addItem( "11x17" );
-ui.comboBoxPaper->addItem( "ledger" );
-ui.comboBoxPaper->addItem( "legal" );
-ui.comboBoxPaper->addItem( "letter" );
-ui.comboBoxPaper->addItem( "lettersmall" );
+    :QDialog( parent) {
+    setWindowTitle("Texmaker");
+    setModal(true);
+    ui.setupUi(this);
+    ui.comboBoxPaper->addItem( "a1" );
+    ui.comboBoxPaper->addItem( "a2" );
+    ui.comboBoxPaper->addItem( "a3" );
+    ui.comboBoxPaper->addItem( "a4" );
+    ui.comboBoxPaper->addItem( "a5" );
+    ui.comboBoxPaper->addItem( "a6" );
+    ui.comboBoxPaper->addItem( "a7" );
+    ui.comboBoxPaper->addItem( "a8" );
+    ui.comboBoxPaper->addItem( "11x17" );
+    ui.comboBoxPaper->addItem( "ledger" );
+    ui.comboBoxPaper->addItem( "legal" );
+    ui.comboBoxPaper->addItem( "letter" );
+    ui.comboBoxPaper->addItem( "lettersmall" );
 }
 
-PaperDialog::~PaperDialog(){
+PaperDialog::~PaperDialog() {
 }
 

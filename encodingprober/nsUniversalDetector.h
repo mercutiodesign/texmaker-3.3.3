@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -32,9 +32,9 @@
 
 namespace qencodingprober {
 typedef enum {
-  ePureAscii = 0,
-  eEscAscii  = 1,
-  eHighbyte  = 2
+    ePureAscii = 0,
+    eEscAscii  = 1,
+    eHighbyte  = 2
 } nsInputState;
 
 class  nsUniversalDetector: public nsCharSetProber {
@@ -46,20 +46,20 @@ public:
     void      Reset(void);
     float     GetConfidence(void);
     nsProbingState GetState();
-    void      SetOpion() {};   
+    void      SetOpion() {};
 
 protected:
-   nsInputState  mInputState;
-   bool  mDone;
-   bool  mInTag;
-   bool  mStart;
-   bool  mGotData;
-   char    mLastChar;
-   const char *  mDetectedCharset;
-   int mBestGuess;
+    nsInputState  mInputState;
+    bool  mDone;
+    bool  mInTag;
+    bool  mStart;
+    bool  mGotData;
+    char    mLastChar;
+    const char *  mDetectedCharset;
+    int mBestGuess;
 
-   nsCharSetProber  *mCharSetProbers[NUM_OF_CHARSET_PROBERS];
-   nsCharSetProber  *mEscCharSetProber;
+    nsCharSetProber  *mCharSetProbers[NUM_OF_CHARSET_PROBERS];
+    nsCharSetProber  *mEscCharSetProber;
 };
 }
 

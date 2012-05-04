@@ -23,21 +23,21 @@
 #include "loghighlighter.h"
 
 class LogEditor : public QPlainTextEdit  {
-   Q_OBJECT
-public: 
-	LogEditor(QWidget *parent);
-	~LogEditor();
+    Q_OBJECT
+public:
+    LogEditor(QWidget *parent);
+    ~LogEditor();
 
 public slots:
-   void insertLine(QString l);
-   void setCursorPosition(int parag, int index);
+    void insertLine(QString l);
+    void setCursorPosition(int parag, int index);
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
     void paintEvent(QPaintEvent *event);
 signals:
     void clickonline(int l);
 private:
-  LogHighlighter *highlighter;
+    LogHighlighter *highlighter;
 };
 
 #endif

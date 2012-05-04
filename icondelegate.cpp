@@ -17,8 +17,7 @@
 static const int textMargin = 2;
 
 void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const
-{
+                         const QModelIndex &index) const {
     Q_ASSERT(index.isValid());
     const QAbstractItemModel *model = index.model();
     Q_ASSERT(model);
@@ -62,7 +61,7 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                   ? QPalette::Normal : QPalette::Disabled;
         painter->fillRect(option.rect, option.palette.brush(cg, QPalette::Highlight));
 //painter->fillRect(option.rect,QColor("#78A9dc"));
-painter->fillRect(option.rect,QColor("#cdd2d8"));
+        painter->fillRect(option.rect,QColor("#cdd2d8"));
     } else {
         value = model->data(index, Qt::BackgroundColorRole);
         if (value.isValid() && qvariant_cast<QColor>(value).isValid())
@@ -77,8 +76,7 @@ painter->fillRect(option.rect,QColor("#cdd2d8"));
 }
 
 QSize IconDelegate::sizeHint(const QStyleOptionViewItem &option,
-                              const QModelIndex &index) const
-{
+                             const QModelIndex &index) const {
     Q_ASSERT(index.isValid());
     const QAbstractItemModel *model = index.model();
     Q_ASSERT(model);
@@ -99,7 +97,7 @@ QSize IconDelegate::sizeHint(const QStyleOptionViewItem &option,
 
     return (pixmapRect|textRect|checkRect).size();
 }
- 
+
 
 /*!
     Renders the decoration \a pixmap within the rectangle specified by
@@ -107,8 +105,7 @@ QSize IconDelegate::sizeHint(const QStyleOptionViewItem &option,
 */
 
 void IconDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option,
-                                   const QRect &rect, const QPixmap &pixmap) const
-{
+                                  const QRect &rect, const QPixmap &pixmap) const {
     if (!pixmap.isNull() && !rect.isEmpty()) {
         if (option.state & QStyle::State_Selected) {
             bool enabled = option.state & QStyle::State_Enabled;
@@ -126,9 +123,8 @@ void IconDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem 
 */
 
 void IconDelegate::drawFocus(QPainter *painter,
-                              const QStyleOptionViewItem &option,
-                              const QRect &rect) const
-{
+                             const QStyleOptionViewItem &option,
+                             const QRect &rect) const {
     if (option.state & QStyle::State_HasFocus) {
         QStyleOptionFocusRect o;
         o.QStyleOption::operator=(option);
@@ -136,7 +132,7 @@ void IconDelegate::drawFocus(QPainter *painter,
         QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? QPalette::Normal : QPalette::Disabled;
         o.backgroundColor = option.palette.color(cg, (option.state & QStyle::State_Selected)
-                                                 ? QPalette::Highlight : QPalette::Background);
+                            ? QPalette::Highlight : QPalette::Background);
         QApplication::style()->drawPrimitive(QStyle::PE_FrameFocusRect, &o, painter);
     }
 }
@@ -148,9 +144,8 @@ void IconDelegate::drawFocus(QPainter *painter,
 */
 
 void IconDelegate::drawCheck(QPainter *painter,
-                              const QStyleOptionViewItem &option,
-                              const QRect &rect, Qt::CheckState state) const
-{
+                             const QStyleOptionViewItem &option,
+                             const QRect &rect, Qt::CheckState state) const {
     if (!rect.isValid())
         return;
 
@@ -175,9 +170,8 @@ void IconDelegate::drawCheck(QPainter *painter,
 }
 
 void IconDelegate::doLayout(const QStyleOptionViewItem &option,
-                             QRect *checkRect, QRect *pixmapRect, QRect *textRect,
-                             bool hint) const
-{
+                            QRect *checkRect, QRect *pixmapRect, QRect *textRect,
+                            bool hint) const {
     Q_ASSERT(checkRect && pixmapRect && textRect);
     int x = option.rect.left();
     int y = option.rect.top();
@@ -221,7 +215,8 @@ void IconDelegate::doLayout(const QStyleOptionViewItem &option,
         decoration.setRect(x, y, w, pm.height());
         h = hint ? textRect->height() : h - pm.height();
         display.setRect(x, y + pm.height(), w, h);
-        break; }
+        break;
+    }
     case QStyleOptionViewItem::Bottom: {
         if (!textRect->isEmpty())
             textRect->setHeight(textRect->height() + textMargin); // add space
@@ -229,14 +224,16 @@ void IconDelegate::doLayout(const QStyleOptionViewItem &option,
         decoration.setRect(x, y + h - pm.height(), w, pm.height());
         h = hint ? textRect->height() : h - pm.height();
         display.setRect(x, y, w, h);
-        break; }
+        break;
+    }
     case QStyleOptionViewItem::Left: {
         if (!pm.isEmpty())
             pm.setWidth(pm.width() + textMargin); // add space
         decoration.setRect(x, y, pm.width(), h);
         w = hint ? textRect->width() : w - pm.width() - cw;
         display.setRect(x + pm.width(), y, w, h);
-        break; }
+        break;
+    }
     case QStyleOptionViewItem::Right: {
         if (!textRect->isEmpty())
             textRect->setWidth(textRect->width() + textMargin); // add space
@@ -244,7 +241,8 @@ void IconDelegate::doLayout(const QStyleOptionViewItem &option,
         decoration.setRect(x + w - pm.width() - cw, y, pm.width(), h);
         w = hint ? textRect->width() : w - pm.width() - cw;
         display.setRect(x, y, w, h);
-        break; }
+        break;
+    }
     default:
         qWarning("doLayout: decoration positon is invalid");
         decoration = *pixmapRect;
@@ -263,19 +261,19 @@ void IconDelegate::doLayout(const QStyleOptionViewItem &option,
     *textRect = display;
 }
 
-QPixmap IconDelegate::decoration(const QStyleOptionViewItem &option, const QVariant &variant) const
-{
+QPixmap IconDelegate::decoration(const QStyleOptionViewItem &option, const QVariant &variant) const {
     switch (variant.type()) {
     case QVariant::Icon:
         return qvariant_cast<QIcon>(variant).pixmap(option.decorationSize,
-                                       option.state & QStyle::State_Enabled
-                                       ? QIcon::Normal : QIcon::Disabled,
-                                       option.state & QStyle::State_Open
-                                       ? QIcon::On : QIcon::Off);
+                option.state & QStyle::State_Enabled
+                ? QIcon::Normal : QIcon::Disabled,
+                option.state & QStyle::State_Open
+                ? QIcon::On : QIcon::Off);
     case QVariant::Color: {
         static QPixmap pixmap(20, 20);
         pixmap.fill(qvariant_cast<QColor>(variant));
-        return pixmap; }
+        return pixmap;
+    }
     default:
         break;
     }
@@ -286,8 +284,7 @@ QPixmap IconDelegate::decoration(const QStyleOptionViewItem &option, const QVari
   \internal
 */
 
-QPixmap *IconDelegate::selected(const QPixmap &pixmap, const QPalette &palette, bool enabled) const
-{
+QPixmap *IconDelegate::selected(const QPixmap &pixmap, const QPalette &palette, bool enabled) const {
     QString key;
     key.sprintf("%d-%d", pixmap.serialNumber(), enabled);
     QPixmap *pm = QPixmapCache::find(key);
@@ -295,7 +292,7 @@ QPixmap *IconDelegate::selected(const QPixmap &pixmap, const QPalette &palette, 
         QImage img = pixmap.toImage().convertToFormat(QImage::Format_ARGB32_Premultiplied);
 
         QColor color = palette.color(enabled ? QPalette::Normal : QPalette::Disabled,QPalette::Highlight);
-        
+
         color.setAlphaF(0.3);
 
         QPainter painter(&img);
@@ -314,8 +311,7 @@ QPixmap *IconDelegate::selected(const QPixmap &pixmap, const QPalette &palette, 
 */
 
 QRect IconDelegate::check(const QStyleOptionViewItem &option,
-                           const QRect &bounding, const QVariant &value) const
-{
+                          const QRect &bounding, const QVariant &value) const {
     if (value.isValid()) {
         QStyleOptionButton opt;
         opt.QStyleOption::operator=(option);

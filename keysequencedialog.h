@@ -16,13 +16,12 @@
 
 #include <QKeySequence>
 
-class KeySequenceDialog : public QDialog
-{
+class KeySequenceDialog : public QDialog {
     Q_OBJECT
-public: 
-	KeySequenceDialog(QWidget *parent = 0);
-	~KeySequenceDialog();
-	Ui::KeySequenceDialog ui;
+public:
+    KeySequenceDialog(QWidget *parent = 0);
+    ~KeySequenceDialog();
+    Ui::KeySequenceDialog ui;
     QKeySequence keySequence() const;
     bool eventFilter(QObject *o, QEvent *e);
 public Q_SLOTS:

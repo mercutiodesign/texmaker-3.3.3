@@ -14,11 +14,10 @@
 
 #include "ui_graphicfilechooser.h"
 
-class GraphicFileChooser : public QDialog
-{
+class GraphicFileChooser : public QDialog {
     Q_OBJECT
 
- public:
+public:
     GraphicFileChooser( QWidget *parent = 0, QString name="");
     Ui::GraphicFileChooser ui;
     QString fileName() const;

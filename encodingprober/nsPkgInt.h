@@ -11,7 +11,7 @@
 *  permit persons to whom the Software is furnished to do so, subject to
 *  the following conditions:
 *
-*  The above copyright notice and this permission notice shall be included 
+*  The above copyright notice and this permission notice shall be included
 *  in all copies or substantial portions of the Software.
 *
 *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -28,35 +28,35 @@
 
 namespace qencodingprober {
 typedef enum {
-  eIdxSft4bits  = 3,
-  eIdxSft8bits  = 2,
-  eIdxSft16bits = 1
-} nsIdxSft; 
+    eIdxSft4bits  = 3,
+    eIdxSft8bits  = 2,
+    eIdxSft16bits = 1
+} nsIdxSft;
 
 typedef enum {
-  eSftMsk4bits  = 7,
-  eSftMsk8bits  = 3,
-  eSftMsk16bits = 1
-} nsSftMsk; 
+    eSftMsk4bits  = 7,
+    eSftMsk8bits  = 3,
+    eSftMsk16bits = 1
+} nsSftMsk;
 
 typedef enum {
-  eBitSft4bits  = 2,
-  eBitSft8bits  = 3,
-  eBitSft16bits = 4
-} nsBitSft; 
+    eBitSft4bits  = 2,
+    eBitSft8bits  = 3,
+    eBitSft16bits = 4
+} nsBitSft;
 
 typedef enum {
-  eUnitMsk4bits  = 0x0000000FL,
-  eUnitMsk8bits  = 0x000000FFL,
-  eUnitMsk16bits = 0x0000FFFFL
-} nsUnitMsk; 
+    eUnitMsk4bits  = 0x0000000FL,
+    eUnitMsk8bits  = 0x000000FFL,
+    eUnitMsk16bits = 0x0000FFFFL
+} nsUnitMsk;
 
 typedef struct nsPkgInt {
-  nsIdxSft  idxsft;
-  nsSftMsk  sftmsk;
-  nsBitSft  bitsft;
-  nsUnitMsk unitmsk;
-  unsigned int  *data;
+    nsIdxSft  idxsft;
+    nsSftMsk  sftmsk;
+    nsBitSft  bitsft;
+    nsUnitMsk unitmsk;
+    unsigned int  *data;
 } nsPkgInt;
 }
 

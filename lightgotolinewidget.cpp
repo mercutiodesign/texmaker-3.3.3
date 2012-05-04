@@ -13,42 +13,35 @@
 
 
 LightGotoLineWidget::LightGotoLineWidget(QWidget* parent)
-    : QWidget( parent)
-{
-ui.setupUi(this);
-connect( ui.closeButton, SIGNAL( clicked() ), this, SLOT( doHide() ) );
-connect( ui.gotoButton, SIGNAL( clicked() ), this, SLOT( gotoLine() ) );
-ui.gotoButton->setShortcut(Qt::Key_Return);
-ui.gotoButton->setToolTip("Return");
-ui.closeButton->setShortcut(Qt::Key_Escape);
-ui.closeButton->setToolTip("Escape");
+    : QWidget( parent) {
+    ui.setupUi(this);
+    connect( ui.closeButton, SIGNAL( clicked() ), this, SLOT( doHide() ) );
+    connect( ui.gotoButton, SIGNAL( clicked() ), this, SLOT( gotoLine() ) );
+    ui.gotoButton->setShortcut(Qt::Key_Return);
+    ui.gotoButton->setToolTip("Return");
+    ui.closeButton->setShortcut(Qt::Key_Escape);
+    ui.closeButton->setToolTip("Escape");
 }
 
-LightGotoLineWidget::~LightGotoLineWidget()
-{
+LightGotoLineWidget::~LightGotoLineWidget() {
 
 }
-void LightGotoLineWidget::gotoLine()
-{
-if ( editor )
-  {
-  editor->gotoLine( ui.spinLine->value() - 1 );
-  editor->viewport()->repaint();
-  editor->setFocus();
-  }
+void LightGotoLineWidget::gotoLine() {
+    if ( editor ) {
+        editor->gotoLine( ui.spinLine->value() - 1 );
+        editor->viewport()->repaint();
+        editor->setFocus();
+    }
 
 }
-void LightGotoLineWidget::SetEditor(LightLatexEditor *ed)
-{
-editor=ed;
+void LightGotoLineWidget::SetEditor(LightLatexEditor *ed) {
+    editor=ed;
 }
 
-void LightGotoLineWidget::doHide()
-{
-emit requestHide();
-if ( editor ) 
-	{
-	editor->viewport()->repaint();
-	editor->setFocus();
-	}
+void LightGotoLineWidget::doHide() {
+    emit requestHide();
+    if ( editor ) {
+        editor->viewport()->repaint();
+        editor->setFocus();
+    }
 }

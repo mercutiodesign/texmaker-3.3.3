@@ -17,11 +17,11 @@
 
 
 class StructDialog : public QDialog  {
-   Q_OBJECT
+    Q_OBJECT
 public:
-	StructDialog(QWidget *parent=0, QString name="");
-	~StructDialog();
-	Ui::StructDialog ui;
+    StructDialog(QWidget *parent=0, QString name="");
+    ~StructDialog();
+    Ui::StructDialog ui;
 
 };
 
