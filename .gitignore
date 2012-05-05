@@ -15,3 +15,6 @@
 *.pro.user
 # autosave files of Qt
 *.autosave
+
+# autosaves of gedit:
+*~
