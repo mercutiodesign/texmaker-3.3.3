@@ -1027,7 +1027,7 @@ void Texmaker::setupMenus() {
     Act = new QAction(tr("View Log"), this);
     Act->setData("View Log");
     Act->setShortcut(Qt::Key_F10);
-    connect(Act, SIGNAL(triggered()), this, SLOT(ViewLog()));
+    connect(Act, SIGNAL(triggered()), this, SLOT(ToggleLogPanel()));
     toolMenu->addAction(Act);
     Act = new QAction("BibTeX", this);
     Act->setData("BibTeX");
@@ -2614,13 +2614,8 @@ void Texmaker::fileOpen() {
         QString finame=getName();
         QFileInfo fi(finame);
         QString basename=fi.completeBaseName();
-        QString pdfname=fi.absolutePath()+"/"+basename+".pdf";
+        QString pdfname=buildPath(fi,basename,".pdf");
         QFileInfo pdfi(pdfname);
-        if (!pdfi.exists()) {
-            // try the "build folder"
-            pdfname = fi.absolutePath()+"/build/" + basename + ".pdf";
-            pdfi = QFileInfo(pdfname);
-        }
         if (pdfi.exists() && pdfi.isReadable()) {
             if (pdfviewerWidget) {
                 pdfviewerWidget->openFile(pdfname,viewpdf_command,ghostscript_command);
@@ -2986,29 +2981,25 @@ void Texmaker::fileClose() {
                                       0,
                                       2 ) ) {
         case 0:
+            // save then close
             fileSave();
-            filenames.remove(currentEditorView());
-            comboFiles->removeItem(comboFiles->currentIndex());
-            delete OpenedFilesListWidget->currentItem();
-            delete currentEditorView();
             break;
         case 1:
-            filenames.remove(currentEditorView());
-            comboFiles->removeItem(comboFiles->currentIndex());
-            delete OpenedFilesListWidget->currentItem();
-            delete currentEditorView();
+            // just close tab
             break;
         case 2:
+            // exit
         default:
             return;
             break;
         }
-    } else {
-        filenames.remove(currentEditorView());
-        comboFiles->removeItem(comboFiles->currentIndex());
-        delete OpenedFilesListWidget->currentItem();
-        delete currentEditorView();
     }
+
+    filenames.remove(currentEditorView());
+    comboFiles->removeItem(comboFiles->currentIndex());
+    delete OpenedFilesListWidget->currentItem();
+    delete currentEditorView();
+
     UpdateCaption();
 }
 
@@ -3184,7 +3175,7 @@ void Texmaker::fileOpenRecent() {
             QString finame=getName();
             QFileInfo fi(finame);
             QString basename=fi.completeBaseName();
-            QString pdfname=fi.absolutePath()+"/"+basename+".pdf";
+            QString pdfname=buildPath(fi,basename,".pdf");
             QFileInfo pdfi(pdfname);
             if (pdfi.exists() && pdfi.isReadable()) {
                 if (pdfviewerWidget) {
@@ -4634,6 +4625,54 @@ void Texmaker::ItemToRange(QTreeWidgetItem *item) {
     }
 }
 
+QString Texmaker::dirFromCommand(QString command, QString sub){
+    QRegExp s(sub+"\\s*=\\s*(\"[^\"]*\"|\\S*)"); // matches: \s*=\s*("[^"]*"|\S*)
+    int pos = s.indexIn(command);
+    if (pos > -1) {
+        QString cap = s.cap(1);
+        // trim starting and trailing quotes
+        if(cap.startsWith('\"')) cap=cap.mid(1,cap.length()-2);
+        if(cap.endsWith("/"))
+            return cap;
+        return cap + "/";
+    }
+    return "";
+}
+
+QString Texmaker::basename(QFileInfo fi){
+    QString suff=fi.suffix();
+    QString name=fi.fileName();
+    return name.left(name.length()-suff.length()-1);
+}
+
+QString Texmaker::auxiliaryPath(QFileInfo fi, QString extension){
+    QString aux = "-aux-directory";
+    QString dir = fi.absolutePath() + "/";
+    if(pdflatex_command.contains(aux)){
+        dir += dirFromCommand(pdflatex_command, aux);
+    } else if(latex_command.contains(aux)){
+        dir += dirFromCommand(latex_command, aux);
+    } else {
+        return buildPath(fi, extension);
+    }
+    return dir + basename(fi) + extension;
+}
+
+QString Texmaker::buildPath(QFileInfo fi, QString extension){
+    return buildPath(fi, basename(fi), extension);
+}
+
+QString Texmaker::buildPath(QFileInfo fi, QString filename, QString extension){
+    QString outp = "-output-directory";
+    QString dir = fi.absolutePath() + "/";
+    if(pdflatex_command.contains(outp)){
+        dir += dirFromCommand(pdflatex_command, outp);
+    } else if(latex_command.contains(outp)){
+        dir += dirFromCommand(latex_command, outp);
+    }
+    return dir + filename + extension;
+}
+
 void Texmaker::ClickedOnStructure(QTreeWidgetItem *item,int col) {
     if ( !currentEditorView() ) return;
     QString finame;
@@ -4671,7 +4710,7 @@ void Texmaker::ClickedOnStructure(QTreeWidgetItem *item,int col) {
                 QString basename=fic.completeBaseName();
                 if (embedinternalpdf && builtinpdfview) {
                     if (pdfviewerWidget) {
-                        QString pdfname = fic.absolutePath() + "/" + basename + ".pdf";
+                        QString pdfname = buildPath(fic, basename, ".pdf");
                         if (pdfviewerWidget->pdf_file!=pdfname) pdfviewerWidget->openFile(pdfname,viewpdf_command,ghostscript_command);
                         StackedViewers->setCurrentWidget(pdfviewerWidget);
                         pdfviewerWidget->show();
@@ -6119,7 +6158,7 @@ void Texmaker::RunCommand(QString comd,bool waitendprocess) {
     commandline.replace("@",QString::number(currentline));
 
     if (builtinpdfview && (comd==viewpdf_command)) {
-        QString pdfname = fi.absolutePath()+"/"+basename+".pdf";
+        QString pdfname = buildPath(fi, basename, ".pdf");
         if (embedinternalpdf) {
             if (pdfviewerWidget) {
                 pdfviewerWidget->openFile(pdfname,viewpdf_command,ghostscript_command);
@@ -6170,6 +6209,8 @@ void Texmaker::RunCommand(QString comd,bool waitendprocess) {
         }
         return;
     }
+    prepareBuildDir(commandline, fi.absolutePath());
+
     proc = new QProcess( this );
     proc->setWorkingDirectory(fi.absolutePath());
     proc->setProperty("command",commandline);
@@ -6241,6 +6282,14 @@ void Texmaker::RunCommand(QString comd,bool waitendprocess) {
         enableToolsActions();
         StopAct->setEnabled(false);
     }
+}
+
+void Texmaker::prepareBuildDir(QString cmd,QString path){
+    QDir directory(path);
+    QString dir = dirFromCommand(cmd,"-aux-directory");
+    if(dir != "" && !directory.exists(dir)) directory.mkdir(dir);
+    dir = dirFromCommand(cmd,"-output-directory");
+    if(dir != "" && !directory.exists(dir)) directory.mkdir(dir);
 }
 
 void Texmaker::readFromStderr() {
@@ -6547,7 +6596,7 @@ void Texmaker::QuickBuild() {
     break;
     }
     checkViewerInstance=false;
-    if (NoLatexErrors() && showoutputview) ViewLog();
+    if (showoutputview || !NoLatexErrors()) ViewLog();
 }
 
 void Texmaker::Latex() {
@@ -6944,7 +6993,7 @@ void Texmaker::jumpToPdfline(int line) {
     QFileInfo fi(finame);
     if (!fi.exists()) return;
     QString basename=fi.completeBaseName();
-    QString pdfname = fi.absolutePath()+"/"+basename+".pdf";
+    QString pdfname=buildPath(fi,basename,".pdf");
     if (embedinternalpdf) {
         if (pdfviewerWidget) {
             if (pdfviewerWidget->pdf_file!=pdfname) pdfviewerWidget->openFile(pdfname,viewpdf_command,ghostscript_command);
@@ -7001,13 +7050,9 @@ bool Texmaker::LogExists() {
         return false;
     }
     QFileInfo fi(finame);
-    QString name=fi.absoluteFilePath();
-    QString ext=fi.suffix();
-    QString basename=name.left(name.length()-ext.length()-1);
-    QString logname=basename+".log";
+    QString logname=auxiliaryPath(fi,".log");
     QFileInfo fic(logname);
-    if (fic.exists() && fic.isReadable()) return true;
-    else return false;
+    return fic.exists() && fic.isReadable();
 }
 
 void Texmaker::LoadLog() {
@@ -7025,12 +7070,9 @@ void Texmaker::LoadLog() {
         return;
     }
     QFileInfo fi(finame);
-    QString name=fi.absoluteFilePath();
-    QString ext=fi.suffix();
-    QString basename=name.left(name.length()-ext.length()-1);
-    QString logname=basename+".log";
-    QString line;
+    QString logname=auxiliaryPath(fi,".log");
     QFileInfo fic(logname);
+    QString line;
     QTextCodec* codec = QTextCodec::codecForName(input_encoding.toLatin1());
     if(!codec) codec = QTextCodec::codecForLocale();
     if (fic.exists() && fic.isReadable() ) {

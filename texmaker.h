@@ -92,6 +92,14 @@ private:
     bool currentfileSaved();
     bool isCurrentModifiedOutside();
 
+
+    QString buildPath(QFileInfo fi, QString extension);
+    QString buildPath(QFileInfo fi, QString filename, QString extension);
+    QString auxiliaryPath(QFileInfo fi, QString extension);
+    QString basename(QFileInfo fi);
+    QString dirFromCommand(QString command, QString sub);
+
+
     int untitled_id;
 
     FilesMap filenames;
@@ -366,6 +374,7 @@ private slots:
     void QuickDocument();
 
     void RunCommand(QString comd,bool waitendprocess);
+    void prepareBuildDir(QString cmd,QString path);
     void readFromStderr();
     void stopProcess();
     void readFromStdoutput();

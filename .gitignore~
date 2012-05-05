@@ -11,7 +11,5 @@
 *.la
 *.a
 
-# The Development settings of Qt
-*.pro.user
-# autosave files of Qt
-*.autosave
+# The Development settings of QT
+*.user
