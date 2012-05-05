@@ -4625,7 +4625,7 @@ void Texmaker::ItemToRange(QTreeWidgetItem *item) {
     }
 }
 
-QString Texmaker::dirFromCommand(QString command, QString sub){
+QString Texmaker::dirFromCommand(QString command, QString sub) {
     QRegExp s(sub+"\\s*=\\s*(\"[^\"]*\"|\\S*)"); // matches: \s*=\s*("[^"]*"|\S*)
     int pos = s.indexIn(command);
     if (pos > -1) {
@@ -4639,18 +4639,18 @@ QString Texmaker::dirFromCommand(QString command, QString sub){
     return "";
 }
 
-QString Texmaker::basename(QFileInfo fi){
+QString Texmaker::basename(QFileInfo fi) {
     QString suff=fi.suffix();
     QString name=fi.fileName();
     return name.left(name.length()-suff.length()-1);
 }
 
-QString Texmaker::auxiliaryPath(QFileInfo fi, QString extension){
+QString Texmaker::auxiliaryPath(QFileInfo fi, QString extension) {
     QString aux = "-aux-directory";
     QString dir = fi.absolutePath() + "/";
-    if(pdflatex_command.contains(aux)){
+    if(pdflatex_command.contains(aux)) {
         dir += dirFromCommand(pdflatex_command, aux);
-    } else if(latex_command.contains(aux)){
+    } else if(latex_command.contains(aux)) {
         dir += dirFromCommand(latex_command, aux);
     } else {
         return buildPath(fi, extension);
@@ -4658,16 +4658,16 @@ QString Texmaker::auxiliaryPath(QFileInfo fi, QString extension){
     return dir + basename(fi) + extension;
 }
 
-QString Texmaker::buildPath(QFileInfo fi, QString extension){
+QString Texmaker::buildPath(QFileInfo fi, QString extension) {
     return buildPath(fi, basename(fi), extension);
 }
 
-QString Texmaker::buildPath(QFileInfo fi, QString filename, QString extension){
+QString Texmaker::buildPath(QFileInfo fi, QString filename, QString extension) {
     QString outp = "-output-directory";
     QString dir = fi.absolutePath() + "/";
-    if(pdflatex_command.contains(outp)){
+    if(pdflatex_command.contains(outp)) {
         dir += dirFromCommand(pdflatex_command, outp);
-    } else if(latex_command.contains(outp)){
+    } else if(latex_command.contains(outp)) {
         dir += dirFromCommand(latex_command, outp);
     }
     return dir + filename + extension;
@@ -6284,7 +6284,7 @@ void Texmaker::RunCommand(QString comd,bool waitendprocess) {
     }
 }
 
-void Texmaker::prepareBuildDir(QString cmd,QString path){
+void Texmaker::prepareBuildDir(QString cmd,QString path) {
     QDir directory(path);
     QString dir = dirFromCommand(cmd,"-aux-directory");
     if(dir != "" && !directory.exists(dir)) directory.mkdir(dir);
