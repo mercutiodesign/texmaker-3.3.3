@@ -509,7 +509,6 @@ Texmaker::Texmaker(QWidget *parent, Qt::WFlags flags)
     centralFrame->setFrameShape(QFrame::NoFrame);
     centralFrame->setFrameShadow(QFrame::Plain);
 
-
     centralToolBar=new QToolBar("LogToolBar",centralFrame);
     centralToolBar->setFloatable(false);
     centralToolBar->setOrientation(Qt::Vertical);
@@ -584,6 +583,10 @@ Texmaker::Texmaker(QWidget *parent, Qt::WFlags flags)
     connect(racineAct, SIGNAL(triggered()), this, SLOT(InsertFromAction()));
     if (showRacine) centralToolBar->addAction(racineAct);
 
+
+    showcentralAct = new QAction("all", this);
+    showcentralAct->setCheckable(true);
+    connect(showcentralAct, SIGNAL(triggered()), this, SLOT(ToggleShowCentral()));
     showemphasisAct = new QAction("Emphasis", this);
     showemphasisAct->setCheckable(true);
     connect(showemphasisAct, SIGNAL(triggered()), this, SLOT(ToggleEmphasis()));
@@ -680,6 +683,8 @@ Texmaker::Texmaker(QWidget *parent, Qt::WFlags flags)
     CentralLayout->setMargin(0);
     CentralLayout->addWidget(centralToolBar);
     CentralLayout->addWidget(EditorView);
+
+    centralToolBar->setVisible(showCentral);
 
     CentralLayoutBis= new QVBoxLayout(centralFrameBis);
     CentralLayoutBis->setSpacing(0);
@@ -3535,6 +3540,8 @@ void Texmaker::ReadSettings() {
     showMp=config->value( "Show/Metapost",true).toBool();
     showTikz=config->value( "Show/Tikz",true).toBool();
     showAsy=config->value( "Show/Asymptote",true).toBool();
+
+    showCentral=config->value("Show/Central", true).toBool();
     showEmphasis=config->value( "Show/Emphasis",true).toBool();
     showNewline=config->value( "Show/Newline",true).toBool();
     showMathmode=config->value( "Show/Mathmode",true).toBool();
@@ -3991,6 +3998,7 @@ void Texmaker::SaveSettings() {
     config.setValue( "Show/Tikz",showTikz);
     config.setValue( "Show/Asymptote",showAsy);
 
+    config.setValue( "Show/Central",showCentral);
     config.setValue( "Show/Emphasis",showEmphasis);
     config.setValue( "Show/Newline",showNewline);
     config.setValue( "Show/Mathmode",showMathmode);
@@ -8960,6 +8968,12 @@ void Texmaker::ToggleAsymptote() {
 void Texmaker::customContentsMenuMain( const QPoint &pos ) {
     QMenu *menu = QMainWindow::createPopupMenu();
     menu->addSeparator();
+
+    showcentralAct->setChecked(showCentral);
+    menu->addAction(showcentralAct);
+
+    menu->addSeparator();
+
     showemphasisAct->setChecked(showEmphasis);
     menu->addAction(showemphasisAct);
 
@@ -8986,6 +9000,12 @@ void Texmaker::customContentsMenuMain( const QPoint &pos ) {
 
     QPoint globalPos = centralToolBar->mapToGlobal(pos);
     menu->exec( globalPos );
+}
+
+void Texmaker::ToggleShowCentral() {
+    showCentral=!showCentral;
+    // remove central toolbar
+    if(!showCentral) centralToolBar->close();
 }
 
 void Texmaker::ToggleEmphasis() {

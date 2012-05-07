@@ -142,8 +142,8 @@ private:
     QAction *viewPstricksAct, *viewMpAct, *viewTikzAct, *viewAsyAct;
 
     QAction *emphasisAct, *newlineAct, *mathmodeAct, *indiceAct, *puissanceAct, *smallfracAct, *dfracAct, *racineAct;
-    QAction *showemphasisAct, *shownewlineAct, *showmathmodeAct, *showindiceAct, *showpuissanceAct, *showsmallfracAct, *showdfracAct, *showracineAct;
-    bool showEmphasis, showNewline, showMathmode, showIndice, showPuissance, showSmallfrac, showDfrac, showRacine;
+    QAction *showcentralAct, *showemphasisAct, *shownewlineAct, *showmathmodeAct, *showindiceAct, *showpuissanceAct, *showsmallfracAct, *showdfracAct, *showracineAct;
+    bool showCentral, showEmphasis, showNewline, showMathmode, showIndice, showPuissance, showSmallfrac, showDfrac, showRacine;
 
 
     QComboBox *comboCompil, *comboView, *comboFiles;
@@ -485,6 +485,7 @@ private slots:
     void ToggleTikz();
     void ToggleAsymptote();
     void ToggleEmphasis();
+    void ToggleShowCentral();
     void ToggleNewline();
     void ToggleMathmode();
     void ToggleIndice();
