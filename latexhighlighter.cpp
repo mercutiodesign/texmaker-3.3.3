@@ -199,22 +199,22 @@ void LatexHighlighter::highlightBlock(const QString &text) {
             case StateStandard: {
                 tmp=text.at( i );
                 if (tmp=='\\') {
-                    if (next=='[') {
-                        setFormat( i, 1,ColorMath );
-                        blockData->code[i]=1;
-                        state=StateMath;
-                        i++;
-                        if ( i < text.length()) {
-                            setFormat( i, 1,ColorMath);
-                            blockData->code[i]=1;
-                        }
-                    } else {
+//                    if (next=='[') {
+//                        setFormat( i, 1,ColorMath );
+//                        blockData->code[i]=1;
+//                        state=StateMath;
+//                        i++;
+//                        if ( i < text.length()) {
+//                            setFormat( i, 1,ColorMath);
+//                            blockData->code[i]=1;
+//                        }
+//                    } else {
                         setFormat( i, 1,ColorCommand );
                         blockData->code[i]=1;
                         state=StateCommand;
-                    }
+//                    }
                     buffer = QString::null;
-                } else if (tmp=='$') {
+                } /*else if (tmp=='$') {
                     setFormat( i, 1,ColorMath);
                     blockData->code[i]=1;
                     state=StateMath;
@@ -226,7 +226,7 @@ void LatexHighlighter::highlightBlock(const QString &text) {
                         }
                     }
                     buffer = QString::null;
-                } else if (tmp== '%' ) {
+                } */else if (tmp== '%' ) {
                     setFormat( i, 1,ColorComment);
                     state=StateComment;
                     blockData->code[i]=1;
