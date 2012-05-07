@@ -18,3 +18,10 @@
 
 # autosaves of gedit:
 *~
+
+# build files
+texmaker
+Makefile
+.moc
+.ui
+qrc_*.cpp
